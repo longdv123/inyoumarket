@@ -1,0 +1,32 @@
+Plugin\SimpleCoupon\Entity\Config:
+    type: entity
+    table: plg_simple_coupon_config
+    repositoryClass: Plugin\SimpleCoupon\Repository\ConfigRepository
+    uniqueConstraints:
+        config_id:
+            columns:
+                - config_id
+    id:
+        configId:
+            type: bigint
+            nullable: false
+            unsigned: false
+            id: true
+            column: config_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        couponPaymentId:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: coupon_payment_id
+        createDate:
+            type: datetime
+            nullable: true
+            column: create_date
+        updateDate:
+            type: datetime
+            nullable: true
+            column: update_date
+    lifecycleCallbacks: {  }

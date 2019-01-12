@@ -1,0 +1,19 @@
+
+# プラグイン名
+name: 商品並び替えプラグイン
+# オーナーズストアがプラグインを識別するコード
+code: SortProduct
+# バージョン
+version: 1.2.1
+
+## イベント
+event: Event
+
+# サービス
+service:
+    - SortProductServiceProvider
+
+# テーブル定義ファイルの配置ディレクトリ
+orm.path:
+    - /Resource/doctrine
+

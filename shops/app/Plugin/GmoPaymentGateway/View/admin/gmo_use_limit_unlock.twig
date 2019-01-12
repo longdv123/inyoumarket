@@ -1,0 +1,104 @@
+{#
+Copyright(c) 2015 GMO Payment Gateway, Inc. All rights reserved.
+http://www.gmo-pg.com/
+#}
+{% extends  'default_frame.twig' %}
+
+{% set menus = ['order', 'gmo_admin_use_limit_unlock'] %}
+
+{% block title %}受注管理{% endblock %}
+{% block sub_title %}クレジット入力ロック解除{% endblock %}
+
+{% form_theme searchForm 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(function () {
+        });
+
+        function doSearch() {
+            $('#form_mode').val('search');
+	    $('#search_form').submit();
+	    return false;
+	}
+
+        function doUnlock(ipaddress) {
+            $('#form_mode').val('unlock');
+            $('#form_ipaddress').val(ipaddress);
+	    $('#search_form').submit();
+	    return false;
+	}
+    </script>
+{% endblock %}
+
+{% block main %}
+<!--検索条件設定テーブルここから-->
+<div id="search_wrap" class="search-box">
+  <form name="search_form" id="search_form" method="post" action="{{ url('gmo_admin_use_limit_unlock') }}">
+    {{ form_widget(searchForm._token) }}
+    {{ form_widget(searchForm.mode) }}
+    {{ form_widget(searchForm.ipaddress) }}
+    <div id="search_box_main" class="row">
+      <div id="search_box_main__body" class="col-md-12">
+        {{ form_widget(searchForm.search_ipaddress, { attr: { placeholder: 'IPアドレス', class : 'input_search' } } ) }}
+      </div>
+      <!-- /.col -->
+    </div>
+    <div id="search_box_footer" class="row btn_area">
+      <div id="search_box_footer__button_area" class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
+        <button type="button" class="btn btn-primary btn-block btn-lg" onclick="return doSearch();">
+          検索する <svg class="cb cb-angle-right"> <use xlink:href="#cb-angle-right" /></svg>
+        </button>
+      </div>
+      <!-- /.col -->
+    </div>
+  </form>
+</div>
+<!--検索条件設定テーブルここまで-->
+
+<div id="result_list" class="row">
+    <div class="col-md-12">
+        <div id="result_list_main" class="box">
+{% if lineCount > 0 %}
+            <div id="result_list_main__body" class="box-body">
+                <div id="result_list_main__menu" class="row">
+                </div>
+                <div id="result_list_main__list" class="table_list">
+                    <div id="result_list_main__list_body" class="table-responsive with-border">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr id="result_list_main__header">
+                                    <th>IPアドレス</th>
+                                    <th>エラー検出日時</th>
+                                    <th>エラー回数</th>
+                                    <th>ロック解除日時</th>
+                                    <th>ロック状態</th>
+                                    <th>ロック解除</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for account in accounts %}
+                                <tr>
+                                    <td>{{ account.ipaddress }}</td>
+                                    <td>{{ account.date_time }}</td>
+                                    <td>{{ account.error_count }}</td>
+                                    <td>{{ account.unlock_date_time }}</td>
+                                    <td>{{ account.lock_status }}</td>
+                                    <td>{% if account.is_lock %}<a href="javascript:;" onclick="doUnlock('{{ account.ipaddress }}'); return false;">ロック解除</a>{% endif %}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div><!-- /.box-body -->
+{% elseif lineCount == 0 %}
+            <div class="box-header with-arrow">
+                <h3 class="box-title">検索条件に該当するデータがありませんでした。</h3>
+            </div><!-- /.box-header -->
+{% endif %}
+        </div><!-- /.box -->
+    </div><!-- /.col -->
+</div>
+
+{% endblock %}

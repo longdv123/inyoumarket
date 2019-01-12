@@ -1,0 +1,41 @@
+Plugin\ContactList\Entity\ContactReply:
+    type: entity
+    table: plg_contacts_reply
+    repositoryClass: Plugin\ContactList\Repository\ContactReplyRepository
+    id:
+        reply_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        reply_ins_time:
+            type: datetime
+            nullable: false
+        reply_del_time:
+            type: datetime
+            nullable: true
+        reply_subject:
+            type: text
+            nullable: false
+        reply_contents:
+            type: text
+            nullable: false
+        reply_memo:
+            type: text
+            nullable: true
+    manyToOne:
+      reply_contact_id:
+            targetEntity: Plugin\ContactList\Entity\ContactList
+            inversedBy: contact_replies
+            joinColumn:
+                name: reply_contact_id
+                referencedColumnName: contact_id
+      reply_member:
+            targetEntity: Eccube\Entity\Member
+            joinColumn:
+                name: reply_member_id
+                referencedColumnName: member_id
+    lifecycleCallbacks: {  }

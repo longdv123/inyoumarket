@@ -1,0 +1,13 @@
+eccube.event.controller.shopping_confirm.before:
+    - [onControllerShoppingConfirmBefore, NORMAL]
+
+eccube.event.controller.shopping.after:
+    - [onControllerShoppingAfter, NORMAL]
+
+eccube.event.render.shopping.before:
+    - [onRenderShoppingBefore, NORMAL]
+
+eccube.event.render.admin_setting_shop_payment_edit.before:
+    - [onRenderAdminSettingShopPaymentEditBefore, NORMAL]
+
+

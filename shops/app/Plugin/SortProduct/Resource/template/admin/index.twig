@@ -1,0 +1,371 @@
+
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['product', 'sort_product'] %}
+
+{% block title %}商品管理{% endblock %}
+{% block sub_title %}商品並び替え{% endblock %}
+
+{% block stylesheet %}
+
+{% endblock stylesheet %}
+
+{% block javascript %}
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.core.min.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.widget.min.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js"></script>
+    <script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js"></script>
+
+
+<script>
+
+
+    {# 古い並び替えの配列を作成 #}
+    var old_rank= new Array();
+    {% for Product in productRecordsPlus %}
+    old_rank[{{ loop.index0 }}] = {{ Product.rank }};
+    {% endfor %}
+
+    {# ドラッグ＆ドロップ時の対象rank保管 #}
+    var fromRank = null;
+
+    {# rank変更用セレクトボックスの選択肢一覧 #}
+    {#var choices = {#}
+        {#{% for rank,no in choices %}#}
+        {#"{{ rank }}": "{{ no }}",#}
+        {#{% endfor %}#}
+    {#};#}
+
+    $(function() {
+
+        // ドラッグ＆ドロップ部分
+        $("div.tableish").sortable({
+            items: '> .item_box',
+            cursor: 'move',
+            update: function(e, ui) {
+                $("body").append($('<div class="modal-backdrop in"></div>'));
+                updateRank();
+            }
+        });
+
+        var updateRank = function() {
+            // 並び替え後にrankを更新
+            var newRanks = {};
+            var i = 0 + {{ page_count * (page_no - 1) }};
+            $("div.tableish > .item_box").each(function() {
+                newRanks[this.dataset.productId] = old_rank[i];
+                i++;
+            });
+
+
+            $.ajax({
+                url: '{{ url('plg_SortProduct_product_rank_move') }}',
+                type: 'POST',
+                data: newRanks
+            }).done(function(data) {
+                console.log(data);
+                $(".modal-backdrop").remove();
+            }).fail(function() {
+                console.log('fail');
+                $(".modal-backdrop").remove();
+            }).always(function() {
+                location.reload();
+            });
+
+
+        };
+
+
+
+        $("#update_btn").click(function(){
+            {% if categoryId == null %}
+            location.href = "{{ path( this_page, { 'page_no': page_no} )}}";
+            {% else %}
+            location.href = "{{ path( this_page_by, { 'categoryId': categoryId, 'page_no': page_no} )}}";
+            {% endif %}
+        });
+
+
+//        var selector = "#select_box_1";
+
+        //setSelectBox(selector,choices);
+
+    });
+
+    function clickMoveRankButton(fromRank,selectBoxNo){
+//        console.log("--------");
+//console.log("selectBoxNo:"+selectBoxNo);
+//        console.log("fromRank:"+fromRank);
+        var fromNo = parseInt(selectBoxNo);
+
+        var selector = "#select_box_"+selectBoxNo;
+
+//console.log("select.val:"+$(selector).val());
+
+//        var toRank=$(selector).val();
+        var toNo = parseInt($(selector).val());
+//console.log("toNo:"+toNo);
+        {# 異動先の一つ上のrank (一つ上のrankの下に移動する) #}
+
+
+//        alert(toRank);
+
+
+        if(toNo != fromNo) {
+            if(toNo > fromNo){
+                {# 順位を下げる場合 #}
+                var toRankBefore=nowRanks[toNo];
+            } else {
+                {# 順位を上げる場合 #}
+                var toRankBefore=nowRanks[toNo-1];
+            }
+            console.log("toNo > fromNo:"+(toNo > fromNo));
+            console.log("toRankBefore:"+toRankBefore);
+            var toRank = nowRanks[toNo];
+
+            {#var parameter = "{{ app.request.query.all }}";#}
+            {#var url = "{{ url('plugin_SortProduct') }}";#}
+            {#var url = "{{ url('plugin_SortProduct') }}";#}
+
+
+
+            {#<a href="{{ url('admin_product_product_edit', { id : Product.productRecord.id }) }}">#}
+            {#<img src="{{ app.config.image_save_urlpath }}/{{ Product.productRecord.mainFileName|no_image_product }}" />#}
+
+
+            {#{% if categoryId != null %}#}
+            {#var url = "{{ url('plugin_SortProduct_byCategory', { categoryId : categoryId }) }}";#}
+            {#{% else %}#}
+            {#var url = "{{ url('plugin_SortProduct_config') }}";#}
+            {#{% endif %}#}
+            {#url = url + "?";#}
+            {#{% for key,value in app.request.query.all %}#}
+            {#{% if (key != "from_rank") and (key != "to_rank_before")  %}#}
+            {#url = url + "{{ key }}={{ value }}&";#}
+            {#{% endif %}#}
+            {#{% endfor %}#}
+            {#url += "from_rank=" + fromRank + "&to_rank_before=" + toRankBefore;#}
+//        alert(url);
+//            window.location.href = url;
+            var selector = "#changeRankForm";
+            var html ='<input type="hidden" name="from_rank" value="' + fromRank + '">'
+                     +'<input type="hidden" name="to_rank_before" value="' + toRankBefore + '">';
+            addHTML(selector,html);
+
+            $(selector).submit();
+
+
+
+        }
+
+    }
+
+    function addHTML(selector,html){
+        $(selector).append(html);
+    }
+
+    var nowRanks= new Array();
+    nowRanks[0] = "top";
+    {% for rank,no in choices %}
+    nowRanks[{{ no }}] = {{ rank }};
+    {% endfor %}
+
+
+    {# 指定したセレクトボックス(selector)を、指定したオプション群(options)へ変更する #}
+//    function setSelectBox(selector,options){
+//        $(selector).empty();
+//        Object.keys(options).forEach( function(key){
+//            var value = options[key];
+//            $(selector).append($("<option>").val(key).text(value));
+//        });
+//    }
+</script>
+
+
+{% endblock javascript %}
+
+{% block main %}
+
+    {% if categoryId != null %}
+    <form id="changeRankForm" method="post" action="{{ url(this_page_by, { 'categoryId': categoryId }) }}">
+    {% else %}
+    <form id="changeRankForm" method="post" action="{{ url(this_page) }}">
+    {% endif %}
+    </form>
+
+            <div class="row" id="aside_wrap">
+                <div id="detail_wrap" class="col-md-9">
+                    <div id="detail_box" class="box form-horizontal">
+
+
+
+                        {% if productRecordsPlus|length <= 0 %}
+                            <div id="detail_box__header" class="box-header">
+                                ※選択したカテゴリーの商品がありません。
+                            </div><!-- /.box-header -->
+
+
+                        {% else %}
+                            <div id="detail_box__header" class="box-header">
+                                ※並べ替えたい商品をドラッグ＆ドロップで移動させるか、移動先の番号をリストから選択して[移動]ボタンを押してください。
+
+                                <!-- 表示件数指定 -->
+                                <ul class="sort-dd">
+                                <li id="result_list__pagemax_menu" class="dropdown">
+                                    <!-- 現在選択されている表示件数の表示 -->
+                                    {% for pageMax in pageMaxis if pageMax.name == page_count %}
+                                    <a class="dropdown-toggle" data-toggle="dropdown">表示：{{ pageMax.name|e }}件<svg class="cb cb-angle-down icon_down"><use xlink:href="#cb-angle-down"></svg></a>
+                                    <ul class="dropdown-menu">
+                                    {% endfor %}
+                                    <!-- 選択リストの表示。ただし、現在選択されている件数は表示しない -->
+                                    {% for pageMax in pageMaxis if pageMax.name != page_count %}
+                                    {% if categoryId != null %}
+                                    <li><a href="{{ path( this_page_by, { 'categoryId': categoryId, 'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
+                                    {% else %}
+                                    <li><a href="{{ path( this_page, { 'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    </ul>
+                                </li>
+                                </ul>
+
+
+
+                            </div><!-- /.box-header -->
+
+
+
+
+
+                        <div id="sortable_list" class="box-body no-padding no-border">
+                            <div id="sortable_list_box" class="sortable_list">
+                                <div id="result_list__list" class="item_list">
+                                    <div class="tableish">
+                                    {#<table width="100%">#}
+
+                                        <!-- フロー表示 商品情報１行ずつ表示 ここから -->
+                                        {% for Product in productRecordsPlus %}
+                                            <div id="sortable_list__item--{{ Product.rank }}" class="item_box tr form-inline" data-product-id="{{ Product.productId }}" data-sort-product-id="{{ Product.rank }}" >
+
+                                                <!-- ドラッグ＆ドロップ可能マーク -->
+                                                <div class="icon_sortable td">
+                                                    <svg class="cb cb-ellipsis-v"> <use xlink:href="#cb-ellipsis-v" /></svg>
+                                                </div>
+
+                                                <!-- 商品並び替えツール ここから -->
+                                                <!-- 並び順番号 -->
+                                                {% set this_no = loop.index + page_count * (page_no - 1) %}
+                                                <div class="item_id td">
+                                                    {{ this_no }}
+                                                    {#{{ loop.index + page_count * (page_no - 1) }}#}
+                                                </div>
+                                                <!-- 並び順の指定セレクトボックス と 変更ボタン -->
+                                                <div class="item_pattern td">
+                                                    <select id="select_box_{{ this_no }}" class="form-inline  padT07 form-control">
+                                                        {% for rank,no in choices %}
+                                                            {% if no == this_no %}
+                                                                {#<option value="{{ no }}">--</option>#}
+                                                                <option value="{{ no }}">{{ no }}</option>
+                                                            {% else %}
+                                                                <option value="{{ no }}">{{ no }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                    <button type="button" id="changeRank" class="btn btn-primary btn-sm" onclick="clickMoveRankButton('{{ Product.rank }}','{{ this_no }}')" >移動</button>
+
+
+                                                </div>
+
+                                                <!-- 商品並び替えツール ここまで -->
+
+
+                                                <!-- 商品画像 -->
+                                                <div id="result_list__image--{{ Product.productRecord.id }}" class="item_photo td">
+                                                    <a href="{{ url('admin_product_product_edit', { id : Product.productRecord.id }) }}">
+                                                        <img src="{{ app.config.image_save_urlpath }}/{{ Product.productRecord.mainFileName|no_image_product }}" />
+                                                    </a>
+                                                </div>
+
+
+                                                <!-- 商品名 -->
+                                                <div id="sortable_list__item_body--{{ Product.rank }}" class="item_detail td">
+                                                    [{{ Product.productId }}]
+                                                    &nbsp;{{ Product.productRecord.name }}
+                                                    [{{ Product.rank }}]
+                                                </div>
+
+                                            </div>
+
+
+
+                                        {% endfor %}
+                                        <!-- フロー表示 商品情報１行ずつ表示 ここまで -->
+
+                                    {#</table>#}
+
+                                        <!-- ページャー ここまで -->
+                                        {% if pagination.totalItemCount > 0 %}
+
+                                            {% if categoryId != null %}
+                                                {% include "SortProduct/Resource/template/admin/pager_custom.twig" with { 'pages' : pagination.paginationData, 'routes' : this_page_by , 'categoryId' : categoryId } %}
+                                            {% else %}
+                                                {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : this_page } %}
+                                            {% endif %}
+                                        {% endif %}
+                                        <!-- ページャー ここまで -->
+
+
+
+                                </div>
+                                </div>
+                            </div>
+                            <!-- 商品リスト ここまで -->
+                        </div><!-- /.box-body -->
+                        <!-- 商品リスト ここまで -->
+                        {% endif %}
+                    </div><!-- /.box -->
+                </div><!-- /.col -->
+
+
+                <div id="common_box" class="col-md-3">
+                    <div class="col_inner" id="aside_column">
+                        <div id="common_button_box" class="box no-header">
+                            <div id="common_button_box__body" class="box-body">
+
+                                {#<div id="common_button_box__insert_button" class="row text-center">#}
+                                    {#<div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">#}
+                                        {#<button type="button" class="btn btn-primary btn-block btn-lg" id="update_btn">並び番号を更新</button>#}
+                                    {#</div>#}
+                                {#</div>#}
+
+
+
+                                {#<div id="common_button_box__class_set_button" class="row with-border">#}
+                                <div id="common_button_box__class_set_button" class="row">
+                                    <!-- カテゴリーツリー表示 ここから -->
+                                    {% if categoryId == null %}
+                                        {{ render(path('plugin_SortProduct_block_category_tree', { categoryId : 0 })) }}
+                                    {% else %}
+                                        {{ render(path('plugin_SortProduct_block_category_tree', { categoryId : categoryId })) }}
+                                    {% endif %}
+                                    <!-- カテゴリーツリー表示 ここまで -->
+
+                                </div>
+
+
+
+
+                            </div><!-- /.box-body -->
+                        </div><!-- /.box -->
+                    </div><!-- /.box -->
+                </div><!-- /.col -->
+
+
+
+            </div>
+            {#</form>#}
+
+
+{% endblock %}

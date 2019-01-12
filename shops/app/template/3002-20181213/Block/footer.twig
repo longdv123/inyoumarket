@@ -1,0 +1,149 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{# アコーディオン #}
+<script>
+    $(function(){
+        $("#acMenu dt").on("click", function() {
+            $(this).next().slideToggle();
+            $(this).toggleClass("active");//追加部分
+        });
+    });
+</script>
+<div class="container-fluid inner">
+    <section id="shopping_flow" class="pc no_tablet">
+        <dl id="acMenu">
+            <dt class="">
+               
+        <section id="shopping_guide" class="pc no_tablet">
+            <dl id="acMenu">
+                <dt class="">
+                    <h3>
+                        <img src="{{ app.config.front_urlpath }}/img/common/tit_foot_02.png" alt="SHOPPING GUIDE">
+                        <span class="angle-circle"><svg class="cb cb-angle-down"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#cb-angle-down"></use></svg></span>
+                    </h3>
+                </dt>
+                <dd style="display: none;">
+                    <div class="guide_01">
+                        <h4>お支払方法</h4>
+                        <p>当店では、クレジットカード決済（先払い）/コンビニ払いのお取り扱いしております。
+                        </p>
+                        <p>■クレジットカード決済<br>
+                            クレジットカード<br>
+                            VISA,Master,JCB,AMEX,Dinners<br>
+                            ※クレジットカードのセキュリティはSSLというシステムを利用しております。<br>
+                            カード番号は暗号化されて安全に送信されますので、どうぞご安心ください。
+                        </p>
+                        <p><img src="{{ app.config.front_urlpath }}/img/common/card.png" alt="クレジットカード">
+                        </p>
+
+ <p>■コンビニ払い<br>ご指定頂きましたコンビニエンスストアにて期日（通常2日）内にお支払いください。
+                        </p>
+
+                            <p>■ご注文の流れ<br>
+                               
+①お客様がお買い物をします。<br>
+②自動メールがお客様のもとに届きます。<br>
+③発送が完了したらINYOUMarketからご連絡をいたします。<br>
+④お客様のもとに各ショップから直送された商品が到着します。<br>
+                            </p>
+                            
+                            <h4>■営業時間</h4><p>
+ネットでのご注文は24時間受け付けております。<br>
+個別のお問い合わせは下記の営業時間内にお願いいたします。<br>
+
+平日　10時から19時まで<br>
+※土日祝祭日はお休みをいただきます。 <br>
+メールの返信は1～2営業日以内にさせていただきます。お急ぎの際はその旨お伝えください。<br>
+                            </p>
+                           
+                            
+                         
+                            <h4>■送料</h4>
+                            <p>当店の商品は全国一律全品送料無料です。<br>
+商品代金とそれ以外の必要料金として消費税をいただいております。<br>決済時に発生します手数料はお客様のご負担とさせていただいております。<br>
+                                </p>
+<h4>■配送について</h4>
+                            <p>配送は佐川急便/ヤマト運輸、レターパックなどでお届けいたします。<br>
+地域や商品の大きさによりまして、物流会社が変更になる事がございますが、何卒御了承下さいませ。<br>
+
+・できる限りご注文確認の3営業日以内に発送をこころがけておりますが、<br>
+商品によっては購入後にひとつひとつオーダーメイドでお届けするものや、オーガニック原料は天候や入荷状況が不安定なものもございます。<br>
+
+当サイトで扱う商品はすべて少量生産型でおつくりしている、安心安全なこだわりの商品のみです。<br>
+
+そのため、通常のショップと比べて多少お時間をいただく場合もございますことをあらかじめご了承ください。
+<br>
+また、お急ぎの場合は別途メッセージにてその旨お書きください。<br>
+                                </p>
+                            </div>
+                            <div class="guide_02">
+                                <h4>返品交換について</h4>
+                                <p>（１）ご注文後のお客さま都合による返品/交換/キャンセル/変更等は開封の有無にかかわらず一切承っておりません。<br>
+お色等のイメージ違いの返品/交換/キャンセルにつきましても、インターネット販売という特性上 100%実物と同じには表示できず、お客さまのPC(モバイル)環境によっても見え方は変わりますので、お受けできません。<br><br>
+（２）配送途中の破損などの事故等がございましたら、商品到着後7日以内に弊社までご連絡下さい。早急に新品と交換させていただきます。※必ず返品前にご連絡ください。連絡のない返品については一切お受け取りできません。<br><br>
+（３）ご注文後でお客さま都合の返品/交換/キャンセルをご希望の場合、事務手数料として商品代金の60%＋各種送料、(すでに発送している場合の送料・代引料など)をご請求させていただきます。
+受け取り前でもすでに発送手続きをしている場合は、往復送料が発生します。<br><br>
+
+（４）商品が返送された場合<br>
+受取拒否・長期不在で返送された場合は、実費往復送料・代引料、またキャンセル手数料として商品代金の60%をご請求いたします。
+お支払頂けない場合は債権回収会社に依頼し、事務手数料＋延滞利息を加算させていただきます。
+
+</p>
+                                <p>【返品、交換をお受けできない商品】<br>
+                                    ・ お届けから7日以上経過した商品<br>
+                                    ・ 一度ご使用になられた商品<br>
+                                    ・ お客様が汚損、破損された商品<br>
+                                    ・ 商品の箱などが破損、紛失、破棄された商品<br>
+                                    ・ 特別企画（にしやま陶器市）などの返品不可商品<br>
+                                    ・ 返品、交換のご連絡から、1週間以上経過して到着した商品</p>
+                                    <p>■輸送時の損傷による商品の不良や納品商品の間違いにつきましては、お送りした商品を返送いただいた後にご注文の商品をお送りいたします（送料は当店が負担します）。</p>
+                                    <p>■万が一、商品が欠品している場合は、同等価格の商品と交換させていただくか、代金をお返しさせていただきます。※返品依頼は商品到着後３日以内にお知らせ下さい。</p><br><br>
+                                    
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </section>
+                        </div>
+						
+
+						
+                            <div class="footer_area">     <ul>
+                                   
+                                   
+									<li><a href="http://inyoumarket.com/shops/user_data/about">IN YOU Marketについて</a></li>
+									<li><a href="http://inyoumarket.com/shops/help/agreement">利用規約</a></li>
+									<li><a href="http://inyoumarket.com/shops/user_data/entrypage">出品希望のお問い合わせはこちら</a></li>
+									
+									<li><a href="http://inyoumarket.com/shops/user_data/company">運営企業</a></li>
+                                    <li><a href="{{ url('help_tradelaw') }}">特定商取引法に基づく表記</a></li>
+									 <li><a href="{{ url('help_privacy') }}">プライバシーポリシー</a></li>
+                                    <li><a href="{{ url('contact') }}">お問い合わせ</a></li>
+                                </ul>
+	<div class="boxContainer">
+	<div class="box"><iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fmacrobioticlikes%2F&tabs=timeline&width=390&height=390&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=635740679937992" width="390" height="300" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe></div>
+	<div class="box"><a href="https://twitter.com/inyou_magazine" class="twitter-follow-button" data-show-count="false">Follow @inyou_magazine</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></div>
+</div>
+                           
+                                <p class="copyright">
+                                    <small>copyright (c) {{ BaseInfo.shop_name }} all rights reserved.</small>
+                                </p>
+                            </div>

@@ -1,0 +1,6 @@
+name: 受注ステータス色分けプラグイン
+event: Event
+code: OrderStatusColor
+version: 0.0.1
+service:
+    - ServiceProvider

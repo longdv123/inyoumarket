@@ -1,0 +1,116 @@
+Plugin\SimpleCoupon\Entity\Coupon:
+    type: entity
+    table: plg_simple_coupon_coupon
+    repositoryClass: Plugin\SimpleCoupon\Repository\CouponRepository
+    uniqueConstraints:
+        coupon_id:
+            columns:
+                - coupon_id
+    id:
+        couponId:
+            type: bigint
+            nullable: false
+            unsigned: true
+            id: true
+            column: coupon_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        couponName:
+            type: string
+            nullable: false
+            length: 200
+            fixed: false
+            column: coupon_name
+        couponCode:
+            type: string
+            nullable: false
+            length: 50
+            fixed: false
+            column: coupon_code
+        fromDate:
+            type: datetime
+            nullable: false
+            column: from_date
+        toDate:
+            type: datetime
+            nullable: true
+            column: to_date
+        discountValue:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: discount_value
+        discountType:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: discount_type
+        discountTargetType:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: discount_target_type
+        combinedUseFlg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: combined_use_flg
+        guestUseFlg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: guest_use_flg
+        onetimeUseFlg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '1'
+            column: onetime_use_flg
+        numberOfIssued:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: number_of_issued
+        bottomPrice:
+            type: integer
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: bottom_price
+        conditionType:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: condition_type
+        conditionActionType:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: condition_action_type
+        status:
+            type: smallint
+            nullable: false
+            unsigned: false
+        delFlg:
+            type: smallint
+            nullable: false
+            unsigned: false
+            default: '0'
+            column: del_flg
+        createDate:
+            type: datetime
+            nullable: true
+            column: create_date
+        updateDate:
+            type: datetime
+            nullable: true
+            column: update_date
+    lifecycleCallbacks: {  }

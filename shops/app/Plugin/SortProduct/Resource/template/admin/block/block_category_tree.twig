@@ -1,0 +1,130 @@
+
+{# カテゴリーのメニューを表示する #}
+
+{% set link_address = 'plugin_SortProduct_byCategory' %}
+
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="svgicon">
+    <symbol id="cb-plus-square" viewBox="0 0 360 360">
+        <path d="M339.635,84.373v189.091c0,18.033-6.402,33.45-19.204,46.251c-12.807,12.804-28.221,19.204-46.25,19.204
+		H85.089c-18.032,0-33.449-6.4-46.25-19.204c-12.805-12.801-19.204-28.218-19.204-46.251V84.373c0-18.029,6.399-33.444,19.204-46.25
+		c12.801-12.802,28.218-19.204,46.25-19.204h189.092c18.029,0,33.443,6.402,46.25,19.204
+		C333.233,50.928,339.635,66.343,339.635,84.373z M310.544,273.463V84.373c0-10-3.562-18.559-10.684-25.684
+		c-7.121-7.118-15.68-10.68-25.68-10.68H85.089c-10.001,0-18.563,3.562-25.683,10.68c-7.122,7.125-10.681,15.684-10.681,25.684
+		v189.091c0,10.001,3.559,18.563,10.681,25.684c7.12,7.121,15.682,10.68,25.683,10.68h189.092c10,0,18.559-3.559,25.68-10.68
+		C306.983,292.026,310.544,283.464,310.544,273.463z M281.453,171.646v14.544c0,2.124-0.681,3.865-2.046,5.229
+		c-1.362,1.363-3.105,2.045-5.226,2.045h-80v80c0,2.125-0.683,3.864-2.046,5.227c-1.363,1.365-3.107,2.046-5.229,2.046h-14.543
+		c-2.124,0-3.865-0.681-5.229-2.046c-1.363-1.362-2.046-3.102-2.046-5.227v-80h-80c-2.124,0-3.863-0.682-5.229-2.045
+		c-1.362-1.363-2.043-3.104-2.043-5.229v-14.544c0-2.121,0.681-3.864,2.043-5.229c1.365-1.362,3.104-2.046,5.229-2.046h80V84.373
+		c0-2.12,0.683-3.864,2.046-5.226c1.363-1.366,3.104-2.046,5.229-2.046h14.543c2.121,0,3.865,0.68,5.229,2.046
+		c1.363,1.361,2.046,3.105,2.046,5.226v79.999h80c2.12,0,3.863,0.684,5.226,2.046C280.772,167.782,281.453,169.525,281.453,171.646z
+		"/>
+    </symbol>
+    <symbol id="cb-minus-square" viewBox="0 0 360 360">
+        <path d="M339.634,84.374v189.09c0,18.033-6.402,33.449-19.204,46.251c-12.806,12.804-28.222,19.204-46.25,19.204
+		H85.089c-18.032,0-33.447-6.4-46.25-19.204c-12.805-12.802-19.203-28.218-19.203-46.251V84.374c0-18.028,6.398-33.445,19.203-46.25
+		c12.803-12.802,28.218-19.205,46.25-19.205H274.18c18.028,0,33.444,6.403,46.25,19.205
+		C333.232,50.928,339.634,66.345,339.634,84.374z M310.544,273.463V84.374c0-9.999-3.563-18.558-10.684-25.682
+		c-7.123-7.12-15.682-10.682-25.681-10.682H85.089c-10,0-18.562,3.562-25.682,10.682c-7.123,7.124-10.682,15.683-10.682,25.682
+		v189.09c0,10,3.559,18.562,10.682,25.682c7.12,7.123,15.682,10.682,25.682,10.682H274.18c9.999,0,18.558-3.559,25.681-10.682
+		C306.982,292.025,310.544,283.463,310.544,273.463z M281.453,171.646v14.545c0,2.124-0.683,3.864-2.046,5.228
+		s-3.107,2.045-5.227,2.045H85.089c-2.123,0-3.863-0.682-5.229-2.045c-1.361-1.363-2.044-3.104-2.044-5.228v-14.545
+		c0-2.12,0.683-3.863,2.044-5.228c1.365-1.362,3.105-2.046,5.229-2.046H274.18c2.119,0,3.863,0.684,5.227,2.046
+		C280.77,167.783,281.453,169.526,281.453,171.646z"/>
+    </symbol>
+
+</svg>
+
+{#<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.core.min.js"></script>#}
+{#<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.widget.min.js"></script>#}
+{#<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.mouse.min.js"></script>#}
+{#<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/jquery.ui/jquery.ui.sortable.min.js"></script>#}
+
+<style>
+    .tree ul {
+        margin-left: 1.2em;
+    }
+    .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+</style>
+
+
+<script>
+    $(function() {
+        // カテゴリツリー開閉
+        // 初期表示
+        $("#category_tree li ul").css("display", "none");
+
+        // 現在地までひらく
+        $("#category_tree li.active").parents("ul").css("display", "");
+        $("#category_tree li.active").parents("ul").siblings().css("display", "");
+
+        // クリックでひらく
+            $("#category_tree li svg").on("click", function(){
+            $(this).parent().children("ul").slideToggle(100);
+        });
+    });
+</script>
+
+
+
+{#// メニューを表示する関数#}
+{% macro tree(Category, TargetId, level) %}
+    {% set level = level + 1 %}
+
+    <li id="tree_item--{{ Category.id }}" class="level{{ level }} {% if Category.id == TargetId %}active{% endif %}">
+        {% if Category.id == TargetId %}{# 選択中の当該カテゴリの場合 #}
+            {% if Category.children|length > 0 %}
+                <svg class="cb cb-plus-square" > <use xlink:href="#cb-plus-square" /></svg>
+            {% else %}
+                <svg class="cb cb-plus-square" > <use xlink:href="#cb-minus-square" /></svg>
+            {% endif %}
+            <a href="{{ url('plugin_SortProduct_byCategory',{'categoryId': Category.id})  }}">
+            [{{ Category.name }}]({{ Category.children|length }})
+            </a>
+        {% else %}{# 選択していないカテゴリの場合 #}
+            {% if Category.children|length > 0 %}
+                <svg class="cb cb-plus-square" > <use xlink:href="#cb-plus-square" /></svg>
+            {% else %}
+                <svg class="cb cb-plus-square" > <use xlink:href="#cb-minus-square" /></svg>
+            {% endif %}
+
+            <a href="{{ url('plugin_SortProduct_byCategory',{'categoryId': Category.id})  }}">
+            {{ Category.name }}({{ Category.children|length }})
+            </a>
+        {% endif %}
+        {% if Category.children|length > 0 %}
+            {% for ChildCategory in Category.children %}
+                <ul id="tree_item_child--{{ ChildCategory.id }}">
+                    {{ _self.tree(ChildCategory, TargetId, level) }}
+                </ul>
+            {% endfor %}
+        {% endif %}
+    </li>
+{% endmacro %}
+
+
+
+
+
+<div id="tree_box" class="col_inner">
+    <div id="tree_box__body" class="box no-header">
+        <div id="tree_box__body_inner" class="box-body">
+            <div id="tree_box__tree" class="tree">
+                <p id="tree_box__header" class="active"><a href="{{ url('plugin_SortProduct') }}">全カテゴリー</a></p>
+
+                <ul id="category_tree">
+
+                    {% for TopCategory in TopCategories %}
+                        {{ _self.tree(TopCategory, TargetCategory.id | default(null), 0)}}
+                    {% endfor %}
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div><!-- /.box -->
+

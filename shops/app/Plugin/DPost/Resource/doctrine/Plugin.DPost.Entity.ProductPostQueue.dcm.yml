@@ -1,0 +1,45 @@
+Plugin\DPost\Entity\ProductPostQueue:
+    type: entity
+    table: plg_product_post_queue
+    repositoryClass: Plugin\DPost\Repository\ProductPostQueueRepository
+    id:
+        product_post_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: product_post_id
+            generator:
+                strategy: AUTO
+    fields:
+        regist_id:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            column: regist_id
+        product_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: product_id
+        queue_status:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: queue_status
+        create_date:
+            type: datetime
+            nullable: false
+            column: create_date
+        update_date:
+            type: datetime
+            nullable: false
+            column: update_date
+    oneToOne:
+        Product:
+            targetEntity: Eccube\Entity\Product
+            joinColumn:
+                name: product_id
+                referencedColumnName: product_id
+    lifecycleCallbacks: {  }

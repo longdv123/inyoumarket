@@ -1,0 +1,4 @@
+eccube.event.render.product_detail.before:
+    - [insertContactButton, NORMAL]
+eccube.event.render.contact.before:
+    - [setContents, NORMAL]

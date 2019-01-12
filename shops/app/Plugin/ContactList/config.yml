@@ -1,0 +1,8 @@
+name: お問い合わせ管理
+code: ContactList
+version: 1.0.0
+event: ContactListEvent
+service:
+    - ContactListServiceProvider
+orm.path:
+    - /Resource/doctrine

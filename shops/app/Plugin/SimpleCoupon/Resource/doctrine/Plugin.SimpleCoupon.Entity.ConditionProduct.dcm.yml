@@ -1,0 +1,71 @@
+Plugin\SimpleCoupon\Entity\ConditionProduct:
+    type: entity
+    table: plg_simple_coupon_condition_product
+    repositoryClass: Plugin\SimpleCoupon\Repository\ConditionProductRepository
+    indexes:
+        coupon_id:
+            columns:
+                - coupon_id
+    uniqueConstraints:
+        condition_id:
+            columns:
+                - condition_id
+    id:
+        conditionId:
+            type: bigint
+            nullable: false
+            unsigned: true
+            id: true
+            column: condition_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        couponId:
+            type: bigint
+            nullable: true
+            unsigned: true
+            column: coupon_id
+        productId:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: product_id
+        productClassId:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: product_class_id
+        categoryId:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: category_id
+    manyToOne:
+        Product:
+            targetEntity: Eccube\Entity\Product
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                product_id:
+                    referencedColumnName: product_id
+            orphanRemoval: false
+        ProductClass:
+            targetEntity: Eccube\Entity\ProductClass
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                product_class_id:
+                    referencedColumnName: product_class_id
+            orphanRemoval: false
+        Category:
+            targetEntity: Eccube\Entity\Category
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                category_id:
+                    referencedColumnName: category_id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

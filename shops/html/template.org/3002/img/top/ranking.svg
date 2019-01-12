@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="134" height="20" viewBox="0 0 134 20">
+  <defs>
+    <style>
+      .cls-1 {
+        font-size: 5.466px;
+        fill: #2a2a2a;
+        text-anchor: middle;
+        font-family: Aparajita;
+      }
+    </style>
+  </defs>
+  <text id="ranking.svg" class="cls-1" transform="translate(66.786 19.022) scale(6.587)"><tspan x="0">RANKING</tspan></text>
+</svg>

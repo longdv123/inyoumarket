@@ -1,0 +1,18 @@
+<div id="coupon_list"  class="form-group">
+	<p>クーポンをご利用の場合は、お持ちのクーポンコードを入力してください。</p>
+	<div><a id="shopping_confirm_box__button_edit_coupon"  href="{{ path('plg_simplecoupon_front_coupon') }}" class="btn btn-default btn-sm">クーポンを利用する</a></div>
+	
+{% if coupon_order_list|length > 0 %}
+ <div id="coupon_list__coupon_box2" class="panel">
+    <div id="coupon_list__coupon_box" class="total_box">
+    	<dl id="coupon_list__list" class="payment_list list-group">
+        {% for CouponOrder in coupon_order_list %}
+    	<dt>{{ CouponOrder.Coupon.couponCode }}</dt>
+    	<dd class="text-primary"> {{ (0-CouponOrder.discountPrice)|price }}</dd>
+        {% endfor %}
+    	</dl>
+    </div>
+ </div>
+ {% endif %}
+ 	<hr>
+</div>

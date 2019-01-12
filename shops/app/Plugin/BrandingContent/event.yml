@@ -1,0 +1,2 @@
+eccube.event.render.admin_login.before:
+    - [onAdminAdminLoginInitialize, NORMAL]

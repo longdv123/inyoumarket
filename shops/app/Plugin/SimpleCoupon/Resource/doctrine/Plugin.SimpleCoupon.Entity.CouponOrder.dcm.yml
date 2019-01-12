@@ -1,0 +1,70 @@
+Plugin\SimpleCoupon\Entity\CouponOrder:
+    type: entity
+    table: plg_simple_coupon_coupon_order
+    repositoryClass: Plugin\SimpleCoupon\Repository\CouponOrderRepository
+    indexes:
+        coupon_id:
+            columns:
+                - coupon_id
+    uniqueConstraints:
+        coupon_order_id:
+            columns:
+                - coupon_order_id
+    id:
+        couponOrderId:
+            type: bigint
+            nullable: false
+            unsigned: true
+            id: true
+            column: coupon_order_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        orderId:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: order_id
+        customerId:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: customer_id
+        email:
+            type: text
+            nullable: true
+            column: email
+        status:
+            type: smallint
+            nullable: true
+            unsigned: false
+            comment: '0:仕掛り中##1:完了##2:無効（キャンセル）'
+        discountPrice:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: discount_price
+        createDate:
+            type: datetime
+            nullable: true
+            column: create_date
+    manyToOne:
+        Coupon:
+            targetEntity: Plugin\SimpleCoupon\Entity\Coupon
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                coupon_id:
+                    referencedColumnName: coupon_id
+            orphanRemoval: false
+        Order:
+            targetEntity: Eccube\Entity\Order
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                order_id:
+                    referencedColumnName: order_id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

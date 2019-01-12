@@ -1,0 +1,55 @@
+name: テレコムクレジット決済プラグイン
+event: ExternalPaymentGateway
+code: ExternalPaymentGateway
+version: 1.0.0
+service: 
+    - ExternalPaymentServiceProvider
+const: 
+    PaymentUtil: true
+
+    EXTERNAL_CREDIT_CODE: ExternalPaymentGateway
+
+    # SSL決済テストモード 1:テストモード 0:本番モード
+    EXTERNAL_CREDIT_TEST_MODE: 0
+
+    # 以下設定変更項目 #
+    EXTERNAL_CREDIT_PAYMENT_NAME : テレコムクレジット決済サービス
+    EXTERNAL_CREDIT_MODULE_NAME : テレコムクレジット決済モジュール
+    EXTERNAL_CREDIT_COMPANY_NAME: テレコムクレジット株式会社
+    EXTERNAL_CREDIT_COMPANY_TEL: 03-3457-5616
+    EXTERNAL_CREDIT_COMPANY_MAIL: sales1@telecomcredit.co.jp
+
+    #決済モジュール 都度決済コード
+    EXTERNAL_CREDIT_SSL_CODE: 10530
+    EXTERNAL_CREDIT_SSL_CODE_NAME: クレジットカード決済
+    #決済モジュール スピード決済コード
+    EXTERNAL_CREDIT_SPEED_CODE: 20530
+    EXTERNAL_CREDIT_SPEED_CODE_NAME: 簡単クレジットカード決済(クレジット情報入力不要)
+
+    #決済金額設定 初期値
+    CREDIT_RULE_MIN: 100
+    CREDIT_RULE_MAX: ''
+    #決済金額設定 管理画面 支払方法管理 利用条件(下限)の最低設定金額
+    CREDIT_RULE_MIN_LIMIT: 100
+
+    #決済アクセス先設定
+    EXTERNAL_CREDIT_SSL_URL: https://EXTERNAL_CREDIT_HOST/inetcredit/secure/order.pl
+    EXTERNAL_CREDIT_SPEED_URL: https://EXTERNAL_CREDIT_HOST/inetcredit/secure/one-click-order.pl
+    #アクセス先のIPアドレス or HOST名
+    EXTERNAL_CREDIT_HOST: secure.telecomcredit.co.jp
+
+    # ご注文内容のご確認画面ホームページリンク表示フラグ 1:表示あり 0:表示なし
+    TELECOM_CREDIT_HOMEPAGE_LINK_FLG : 0
+    #テレコムクレジットホームページリンク先
+    TELECOM_CREDIT_HOMEPAGE : http://www.telecomcredit.co.jp
+
+    # IPアドレスチェックフラグ 1:チェックあり 0:チェックなし
+    EXTERNAL_CREDIT_IPCHECK_FLG: 1
+    # 許容IPアドレス ex)192.0.0.1,192.0.0.2,111.111.111.0/24
+    EXTERNAL_CREDIT_IP_ARROW: 203.191.250.64/27,117.102.215.160/28
+
+    # エラーメール送信フラグ 1:送信あり 0:送信なし
+    EXTERNAL_CREDIT_ERRORMAIL_FLG: 1
+
+orm.path:
+    - /Resource/doctrine

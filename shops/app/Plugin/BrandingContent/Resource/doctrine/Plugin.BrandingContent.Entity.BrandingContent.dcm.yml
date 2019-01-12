@@ -1,0 +1,24 @@
+Plugin\BrandingContent\Entity\BrandingContent:
+    type: entity
+    table: plg_branding_content
+    repositoryClass: Plugin\BrandingContent\Repository\BrandingContentRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: branding_id
+            generator:
+                strategy: NONE
+    fields:
+        client_logo:
+            type: text
+            nullable: true
+        production_logo:
+            type: text
+            nullable: true
+        production_link:
+            type: text
+            nullable: true
+    lifecycleCallbacks: {  }

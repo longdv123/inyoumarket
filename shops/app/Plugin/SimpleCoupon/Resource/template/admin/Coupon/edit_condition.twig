@@ -1,0 +1,435 @@
+{#
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['order', 'plg_simplecoupon_admin_coupon'] %}
+
+{% block title %}クーポン利用条件管理{% endblock %}
+{% block sub_title %}クーポン利用条件登録{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{#% form_theme searchProductModalForm 'Form/bootstrap_3_horizontal_layout.html.twig' %#}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/bootstrap-datetimepicker.min.css">
+{% endblock stylesheet %}
+
+{% block javascript %}
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/moment.min.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/moment-ja.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap-datetimepicker.min.js"></script>
+<script>
+$(function() {
+
+    // 項目数が多く、入力している項目によってEnter押下時に期待する動作が変わるので、いったん禁止
+    $("input").on("keydown", function(e) {
+        if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
+            return false;
+        } else {
+            return true;
+        }
+    });
+
+    // ==================================
+    // クリック時の処理
+    // ==================================
+    
+    // 条件種別 - 会員
+    $("#plg_simplecoupon_admin_coupon_condition_condition_type_1").on("click", function(){
+        $("#customer_area").show();
+        $("#product_area").hide();
+        $("#category_area").hide();
+        $("#customer_list").show();
+        $("#product_list").hide();
+        $("#category_list").hide();
+    });
+    // 条件種別 - 商品
+    $("#plg_simplecoupon_admin_coupon_condition_condition_type_2").on("click", function(){
+        $("#customer_area").hide();
+        $("#product_area").show();
+        $("#category_area").hide();
+        $("#customer_list").hide();
+        $("#product_list").show();
+        $("#category_list").hide();
+    });
+    // 条件種別 - カテゴリ
+    $("#plg_simplecoupon_admin_coupon_condition_condition_type_3").on("click", function(){
+        $("#customer_area").hide();
+        $("#product_area").hide();
+        $("#category_area").show();
+        $("#customer_list").hide();
+        $("#product_list").hide();
+        $("#category_list").show();
+    });
+
+    $("#plg_simplecoupon_admin_coupon_condition_condition_type_0").on("click", function(){
+        $("#customer_area").hide();
+        $("#product_area").hide();
+        $("#category_area").hide();
+        $("#customer_list").hide();
+        $("#product_list").hide();
+        $("#category_list").hide();
+    });
+
+    // ==========================
+    // 初期処理
+    // ==========================
+
+    // 条件種別 - 条件なし
+    if($("#plg_simplecoupon_admin_coupon_condition_condition_type_0").prop('checked')) {
+        
+    }
+    // 条件種別 - 会員
+    if($("#plg_simplecoupon_admin_coupon_condition_condition_type_1").prop('checked')) {
+        $("#customer_area").show();
+    } else {
+        $("#customer_area").hide();
+    }
+    // 条件種別 - 商品
+    if($("#plg_simplecoupon_admin_coupon_condition_condition_type_2").prop('checked')) {
+        $("#product_area").show();
+    } else {
+        $("#product_area").hide();
+    }
+    // 条件種別 - カテゴリ
+    if($("#plg_simplecoupon_admin_coupon_condition_condition_type_3").prop('checked')) {
+        $("#category_area").show();
+    } else {
+        $("#category_area").hide();
+    }
+
+    var inputDate = document.createElement('input');
+    inputDate.setAttribute('type', 'date');
+    if (inputDate.type !== 'date') {
+        $('input[id$=_date]').datetimepicker({
+            locale: 'ja',
+            format: 'YYYY-MM-DD',
+            useCurrent: false,
+            showTodayButton: true
+        });
+    }
+
+
+});
+</script>
+{% endblock javascript %}
+
+{% block main %}
+<div class="row" id="aside_wrap">
+    <form role="form" name="form1" id="form1" method="post" action="{{ path('plg_simplecoupon_admin_coupon_edit_condition', { id : Coupon.couponId }) }}">
+    <input type="hidden" name="mode" value="">
+    {{ form_widget(form._token) }}
+        <div class="col-md-9">
+            <div class="box accordion">
+                <div class="box-header toggle active">
+                    <h3 class="box-title">クーポン情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                </div><!-- /.box-header -->
+                <div class="box-body accpanel" style="display: block;">
+                    <div class="order_list form-horizontal">
+                        {# クーポンコード #}
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="plg_simplecoupon_admin_coupon_condition_coupon_code">クーポンコード</label>
+                            <div class="col-sm-8 col-lg-9">
+                                {{ Coupon.coupon_code }}
+                            </div>
+                        </div>
+                        {# クーポン名 #}
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="plg_simplecoupon_admin_coupon_condition_coupon_name">クーポン名</label>
+                            <div class="col-sm-8 col-lg-9">
+                                {{ Coupon.coupon_name }}
+                            </div>
+                        </div>
+                        {# 利用条件種別 #}
+                        <div class="form-group">
+                            {{ form_label(form.condition_type) }}
+                            <div class="col-sm-8 col-lg-9">
+                                {{ form_widget(form.condition_type) }}
+                                {{ form_errors(form.condition_type) }}
+                            </div>
+                        </div>
+
+                        {# 利用条件アクション種別 #}
+                        <div class="form-group">
+                            {{ form_label(form.condition_action_type) }}
+                            <div class="col-sm-8 col-lg-9">
+                                {{ form_widget(form.condition_action_type) }}
+                                {{ form_errors(form.condition_action_type) }}
+                            </div>
+                        </div>
+                        
+                        {# 対象会員ID #}
+                        <div class="form-group" id="customer_area">
+                            {{ form_label(form.target_customer) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.target_customer,{'attr': {'placeholder': 'ユーザを限定する場合は、ここに対象のユーザIDをカンマ区切りで入力してください。', 'rows': '4'}}) }}
+                                {{ form_errors(form.target_customer) }}
+                            </div>
+                        </div>
+
+                        {# 対象商品ID #}
+                        <div class="form-group" id="product_area">
+                            {{ form_label(form.target_product) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.target_product,{'attr': {'placeholder': '商品を限定する場合は、ここに対象の商品IDをカンマ区切りで入力してください。', 'rows': '4'}}) }}
+                                {{ form_errors(form.target_product) }}
+                            </div>
+                        </div>
+
+                        {# 対象商品カテゴリID #}
+                        <div class="form-group" id="category_area">
+                            {{ form_label(form.target_category) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.target_category,{'attr': {'placeholder': 'カテゴリを限定する場合は、ここに対象のカテゴリIDをカンマ区切りで入力してください。', 'rows': '4'}}) }}
+                                {{ form_errors(form.target_category) }}
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+
+
+
+{#
+            // ===================================
+            // 操作部
+            // ===================================
+#}
+            <div class="row hidden-xs hidden-sm">
+                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">登録</button>
+                     <p><a href="{{ path('plg_simplecoupon_admin_coupon_list') }}">戻る</a></p>
+                </div>
+            </div>
+
+        </div><!-- /.col -->
+    </form>
+</div>
+
+<div id="customer_list">
+{% if pagination %}
+    <div id="result_list" class="row">
+        <div class="col-md-12">
+            <div id="result_list_main" class="box">
+                {% if pagination.totalItemCount > 0 %}
+                <div id="result_list_main__header" class="box-header with-arrow">
+                    <h3 class="box-title">検索結果 <span class="normal"><strong>{{ pagination.totalItemCount }} 名</strong> にクーポンを付与しています。</span></h3>
+                </div><!-- /.box-header -->
+                <div id="result_list_main__body" class="box-body">
+                    <div id="result_list_main__menu" class="row">
+                        <div class="col-md-12">
+                            <ul class="sort-dd">
+                                <li id="result_list_main__pagemax_menu" class="dropdown">
+                                    {% for pageMax in pageMaxis if pageMax.name == page_count %}
+                                        <a id="result_list_main__pagemax_menu_toggle" class="dropdown-toggle" data-toggle="dropdown">{{ pageMax.name|e }}件<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                                        <ul class="dropdown-menu">
+                                    {% endfor %}
+                                    {% for pageMax in pageMaxis if pageMax.name != page_count %}
+                                            <li><a href="{{ path('plg_simplecoupon_admin_coupon_edit_condition', {'id':Coupon.couponId, 'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
+                                    {% endfor %}
+                                        </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <form id="dropdown-form">
+                    <div id="result_list_main__list" class="table_list">
+                        <div id="result_list_main__list_body" class="table-responsive with-border">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr id="result_list_main__header">
+                                        <th id="result_list_main__header_id">ユーザID</th>
+                                        <th id="result_list_main__header_name">ユーザ名</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            {% for CC in pagination %}
+                                    <tr id="result_list_main__item--{{ CC.customerId }}">
+                                        <td id="result_list_main__id--{{ CC.customerId }}">{{ CC.customerId }}</td>
+                                        <td id="result_list_main__name--{{ CC.customerId }}">{{ CC.Customer.name01 }} {{ CC.Customer.name02 }}</td>
+                                        <td id="result_list_main__item_menu_box--{{ CC.customerId }}" class="icon_edit">
+                                            <div id="result_list_main__item_menu--{{ CC.customerId }}" class="dropdown">
+                                                <a id="result_list_main__item_menu_toggle--{{ CC.customerId }}" class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                                <ul id="result_list_main_item_menu--{{ CC.customerId }}" class="dropdown-menu dropdown-menu-right">
+                                                <li><a href="{{ path('plg_simplecoupon_admin_coupon_edit_condition_customer_delete', { id : CC.couponId, customer_id : CC.customerId }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このユーザへの当クーポンの割り当てを削除してもよろしいですか？">削除</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    </form>
+                </div><!-- /.box-body -->
+                {% if pagination.totalItemCount > 0 %}
+                    {% include "pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'plg_simplecoupon_admin_coupon_edit_condition' } %}
+                {% endif %}
+                {% else %}
+                {% endif %}
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+    </div>
+
+{% endif %}
+</div>
+
+<div id="product_list">
+{% if paginationProduct %}
+    <div id="result_list" class="row">
+        <div class="col-md-12">
+            <div id="result_list_main" class="box">
+                {% if paginationProduct.totalItemCount > 0 %}
+                <div id="result_list_main__header" class="box-header with-arrow">
+                    <h3 class="box-title">検索結果 <span class="normal"><strong>{{ paginationProduct.totalItemCount }} 件</strong> の商品に限定します。</span></h3>
+                </div><!-- /.box-header -->
+                <div id="result_list_main__body" class="box-body">
+                    <div id="result_list_main__menu" class="row">
+                        <div class="col-md-12">
+                            <ul class="sort-dd">
+                                <li id="result_list_main__pagemax_menu" class="dropdown">
+                                    {% for pageMax in pageMaxis if pageMax.name == page_count %}
+                                        <a id="result_list_main__pagemax_menu_toggle" class="dropdown-toggle" data-toggle="dropdown">{{ pageMax.name|e }}件<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                                        <ul class="dropdown-menu">
+                                    {% endfor %}
+                                    {% for pageMax in pageMaxis if pageMax.name != page_count %}
+                                            <li><a href="{{ path('plg_simplecoupon_admin_coupon_edit_condition', {'id':Coupon.couponId, 'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
+                                    {% endfor %}
+                                        </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <form id="dropdown-form">
+                    <div id="result_list_main__list" class="table_list">
+                        <div id="result_list_main__list_body" class="table-responsive with-border">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr id="result_list_main__header">
+                                        <th id="result_list_main__header_id">商品ID/規格ID</th>
+                                        <th id="result_list_main__header_name">商品名</th>
+                                        <th id="result_list_main__header_class1">規格1</th>
+                                        <th id="result_list_main__header_class2">規格2</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            {% for CC in paginationProduct %}
+                                    <tr id="result_list_main__item--{{ CC.productClassId }}">
+                                        <td id="result_list_main__id--{{ CC.productClassId }}">{{ CC.productId }}/{{ CC.productClassId }}</td>
+                                        <td id="result_list_main__name--{{ CC.productClassId }}">{{ CC.Product.name }}</td>
+                                        <td id="result_list_main__class1--{{ CC.productClassId }}">{{ CC.ProductClass.ClassCategory1.name }}</td>
+                                        <td id="result_list_main__class2--{{ CC.productClassId }}">{{ CC.ProductClass.ClassCategory2.name }}</td>
+                                        <td id="result_list_main__item_menu_box--{{ CC.productClassId }}" class="icon_edit">
+                                            <div id="result_list_main__item_menu--{{ CC.productClassId }}" class="dropdown">
+                                                <a id="result_list_main__item_menu_toggle--{{ CC.productClassId }}" class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                                <ul id="result_list_main_item_menu--{{ CC.productClassId }}" class="dropdown-menu dropdown-menu-right">
+                                                <li><a href="{{ path('plg_simplecoupon_admin_coupon_edit_condition_product_delete', { id : CC.couponId, product_class_id : CC.productClassId }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="この商品への当クーポンの割り当てを削除してもよろしいですか？">削除</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    </form>
+                </div><!-- /.box-body -->
+                {% if paginationProduct.totalItemCount > 0 %}
+                    {% include "pager.twig" with { 'pages' : paginationProduct.paginationData, 'routes' : 'plg_simplecoupon_admin_coupon_edit_condition' } %}
+                {% endif %}
+                {% else %}
+                {% endif %}
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+    </div>
+
+{% endif %}
+</div>
+
+
+<div id="category_list">
+{% if paginationCategory %}
+    <div id="result_list" class="row">
+        <div class="col-md-12">
+            <div id="result_list_main" class="box">
+                {% if paginationCategory.totalItemCount > 0 %}
+                <div id="result_list_main__header" class="box-header with-arrow">
+                    <h3 class="box-title">検索結果 <span class="normal"><strong>{{ paginationCategory.totalItemCount }} 件</strong> のカテゴリに限定します。</span></h3>
+                </div><!-- /.box-header -->
+                <div id="result_list_main__body" class="box-body">
+                    <div id="result_list_main__menu" class="row">
+                        <div class="col-md-12">
+                            <ul class="sort-dd">
+                                <li id="result_list_main__pagemax_menu" class="dropdown">
+                                    {% for pageMax in pageMaxis if pageMax.name == page_count %}
+                                        <a id="result_list_main__pagemax_menu_toggle" class="dropdown-toggle" data-toggle="dropdown">{{ pageMax.name|e }}件<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></a>
+                                        <ul class="dropdown-menu">
+                                    {% endfor %}
+                                    {% for pageMax in pageMaxis if pageMax.name != page_count %}
+                                            <li><a href="{{ path('plg_simplecoupon_admin_coupon_edit_condition', {'id':Coupon.couponId, 'page_no': 1, 'page_count': pageMax.name}) }}">{{ pageMax.name|e }}件</a></li>
+                                    {% endfor %}
+                                        </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <form id="dropdown-form">
+                    <div id="result_list_main__list" class="table_list">
+                        <div id="result_list_main__list_body" class="table-responsive with-border">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr id="result_list_main__header">
+                                        <th id="result_list_main__header_id">カテゴリID</th>
+                                        <th id="result_list_main__header_name">カテゴリ名</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            {% for CC in paginationCategory %}
+                                    <tr id="result_list_main__item--{{ CC.categoryId }}">
+                                        <td id="result_list_main__id--{{ CC.categoryId }}">{{ CC.categoryId }}</td>
+                                        <td id="result_list_main__name--{{ CC.categoryId }}">{{ CC.Category.name }}</td>
+                                        <td id="result_list_main__item_menu_box--{{ CC.categoryId }}" class="icon_edit">
+                                            <div id="result_list_main__item_menu--{{ CC.categoryId }}" class="dropdown">
+                                                <a id="result_list_main__item_menu_toggle--{{ CC.categoryId }}" class="dropdown-toggle" data-toggle="dropdown"><svg class="cb cb-ellipsis-h"> <use xlink:href="#cb-ellipsis-h" /></svg></a>
+                                                <ul id="result_list_main_item_menu--{{ CC.categoryId }}" class="dropdown-menu dropdown-menu-right">
+                                                <li><a href="{{ path('plg_simplecoupon_admin_coupon_edit_condition_category_delete', { id : CC.couponId, category_id : CC.categoryId }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このカテゴリへの当クーポンの割り当てを削除してもよろしいですか？">削除</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    </form>
+                </div><!-- /.box-body -->
+                {% if paginationCategory.totalItemCount > 0 %}
+                    {% include "pager.twig" with { 'pages' : paginationCategory.paginationData, 'routes' : 'plg_simplecoupon_admin_coupon_edit_condition' } %}
+                {% endif %}
+                {% else %}
+                {% endif %}
+            </div><!-- /.box -->
+        </div><!-- /.col -->
+    </div>
+
+{% endif %}
+</div>
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block modal %}
+
+{% endblock %}

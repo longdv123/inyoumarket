@@ -1,0 +1,6 @@
+front.contact.index.initialize:
+    - [onContactInitialize, NORMAL]
+front.contact.index.complete:
+    - [onContactComplete, NORMAL]
+mail.contact:
+    - [onMailContact, NORMAL]

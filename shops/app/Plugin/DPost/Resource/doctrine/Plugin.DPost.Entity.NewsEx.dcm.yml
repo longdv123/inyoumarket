@@ -1,0 +1,46 @@
+Plugin\DPost\Entity\NewsEx:
+    type: entity
+    table: plg_news_ex
+    repositoryClass: Plugin\DPost\Repository\NewsExRepository
+    id:
+        newsExId:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: news_ex_id
+            generator:
+                strategy: AUTO
+    fields:
+        news_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: news_id
+        push_status:
+            type: smallint
+            nullable: false
+            unsigned: false
+            column: push_status
+        push_count:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: push_count
+        click:
+            type: integer
+            nullable: false
+            unsigned: false
+        end_number:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: end_number
+    oneToOne:
+        News:
+            targetEntity: Eccube\Entity\News
+            cascade: ["persist", "remove"]
+            joinColumn:
+                name: news_id
+                referencedColumnName: news_id
+    lifecycleCallbacks: {  }

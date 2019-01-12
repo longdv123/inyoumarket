@@ -1,0 +1,32 @@
+Plugin\DPost\Entity\DpostSetting:
+    type: entity
+    table: plg_dpost_setting
+    repositoryClass: Plugin\DPost\Repository\DpostSettingRepository
+    id:
+        id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: setting_id
+            generator:
+                strategy: AUTO
+    fields:
+        project_id:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            column: project_id
+        api_key:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            column: api_key
+        product_flg:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: product_flg
+    lifecycleCallbacks: {  }

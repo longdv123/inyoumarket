@@ -1,0 +1,81 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% if is_granted('ROLE_USER') %}
+    <div id="member" class="member drawer_block pc">
+        <ul class="member_link">
+            <li>
+                <a href="{{ url('mypage') }}">
+                    <svg class="cb">
+                        <use xlink:href="#ico_mypage" />
+                    </svg>
+                    <span class="sp">マイページ</span>
+                </a>
+            </li>
+            {% if BaseInfo.option_favorite_product == 1 %}
+                <li>
+                    <a href="{{ url('mypage_favorite') }}">
+                        <svg class="cb">
+                        <use xlink:href="#ico_favorite"></use>
+                    </svg>
+                 <span class="sp">お気に入り</span>
+             </a></li>
+            {% endif %}
+            <li>
+                <a href="{{ url('logout') }}">
+                    <svg class="cb">
+                        <use xlink:href="#ico_logout" />
+                    </svg>
+                    <span class="sp">ログアウト</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+{% else %}
+    <div id="member" class="member drawer_block pc">
+        <ul class="member_link">
+            <li>
+                <a href="{{ url('entry') }}">
+                    <svg class="cb">
+                        <use xlink:href="#ico_mypage" />
+                    </svg>
+                    <span class="sp">新規登録</span>
+                </a>
+            </li>
+            {% if BaseInfo.option_favorite_product == 1 %}
+                <li><a href="{{ url('mypage_favorite') }}">
+                    <svg class="cb">
+                        <use xlink:href="#ico_favorite"></use>
+                </svg>
+                <span class="sp">お気に入り</span>
+            </a></li>
+            {% endif %}
+            <li>
+                <a href="{{ url('mypage_login') }}">
+                    <svg class="cb">
+                        <use xlink:href="#ico_login" />
+                    </svg>
+                    <span class="sp">ログイン</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+{% endif %}

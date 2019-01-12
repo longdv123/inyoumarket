@@ -1,0 +1,82 @@
+Plugin\ContactList\Entity\ContactList:
+    type: entity
+    table: plg_contacts
+    repositoryClass: Plugin\ContactList\Repository\ContactListRepository
+    id:
+        contact_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        contact_ins_time:
+            type: datetime
+            nullable: false
+        contact_del_time:
+            type: datetime
+            nullable: true
+        contact_name01:
+            type: text
+            nullable: false
+        contact_name02:
+            type: text
+            nullable: false
+        contact_kana01:
+            type: text
+            nullable: true
+        contact_kana02:
+            type: text
+            nullable: true
+        contact_zip01:
+            type: text
+            nullable: true
+        contact_zip02:
+            type: text
+            nullable: true
+        contact_addr01:
+            type: text
+            nullable: true
+        contact_addr02:
+            type: text
+            nullable: true
+        contact_tel01:
+            type: text
+            nullable: true
+        contact_tel02:
+            type: text
+            nullable: true
+        contact_tel03:
+            type: text
+            nullable: true
+        contact_email:
+            type: text
+            nullable: false
+        #contact_kind:
+        #    type: text
+        #    nullable: false
+        contact_contents:
+            type: text
+            nullable: false
+        contact_memo:
+            type: text
+            nullable: true
+    manyToOne:
+        contact_pref:
+            targetEntity: Eccube\Entity\Master\Pref
+            joinColumn:
+                name: contact_pref
+                referencedColumnName: id
+        contact_status:
+            targetEntity: Plugin\ContactList\Entity\ContactStatus
+            joinColumn:
+                name: contact_status
+                referencedColumnName: id
+    oneToMany:
+        contact_replies:
+            targetEntity: Plugin\ContactList\Entity\ContactReply
+            mappedBy: reply_contact_id
+            orderBy:
+                reply_id: ASC
+    lifecycleCallbacks: {  }

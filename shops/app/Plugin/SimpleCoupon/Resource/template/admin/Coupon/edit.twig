@@ -1,0 +1,219 @@
+{#
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['order', 'plg_simplecoupon_admin_coupon'] %}
+
+{% block title %}クーポン管理{% endblock %}
+{% block sub_title %}クーポン登録{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{#% form_theme searchProductModalForm 'Form/bootstrap_3_horizontal_layout.html.twig' %#}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ app.config.admin_urlpath }}/assets/css/bootstrap-datetimepicker.min.css">
+{% endblock stylesheet %}
+
+{% block javascript %}
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/moment.min.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/moment-ja.js"></script>
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/bootstrap-datetimepicker.min.js"></script>
+<script>
+$(function() {
+
+    // 項目数が多く、入力している項目によってEnter押下時に期待する動作が変わるので、いったん禁止
+    $("input").on("keydown", function(e) {
+        if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
+            return false;
+        } else {
+            return true;
+        }
+    });
+
+    // ==================================
+    // クリック時の処理
+    // ==================================
+    // 値引き額
+    $("#admin_coupon_discount_type_0").on("click", function(){
+        $("#admin_coupon_discount_price").removeAttr('disabled');
+        $("#admin_coupon_discount_rate").attr('disabled', 'disabled');
+    });
+    // 値引率
+    $("#admin_coupon_discount_type_1").on("click", function(){
+        $("#admin_coupon_discount_price").attr('disabled', 'disabled');
+        $("#admin_coupon_discount_rate").removeAttr('disabled');
+    });
+
+    // ==========================
+    // 初期処理
+    // ==========================
+    // 値引き額
+    if($("#admin_coupon_discount_type_0").prop('checked')) {
+        $("#admin_coupon_discount_price").removeAttr('disabled');
+    } else {
+        $("#admin_coupon_discount_price").attr('disabled', 'disabled');
+    }
+    // 値引率
+    if($("#admin_coupon_discount_type_1").prop('checked')) {
+        $("#admin_coupon_discount_rate").removeAttr('disabled');
+    } else {
+        $("#admin_coupon_discount_rate").attr('disabled', 'disabled');
+    }
+
+    var inputDate = document.createElement('input');
+    inputDate.setAttribute('type', 'date');
+    if (inputDate.type !== 'date') {
+        $('input[id$=_date]').datetimepicker({
+            locale: 'ja',
+            format: 'YYYY-MM-DD',
+            useCurrent: false,
+            showTodayButton: true
+        });
+    }
+
+
+});
+</script>
+{% endblock javascript %}
+
+{% block main %}
+<div class="row" id="aside_wrap">
+{% if id %}
+    <form role="form" name="form1" id="form1" method="post" action="{{ path('plg_simplecoupon_admin_coupon_edit', { id : id })}}">
+{% else %}
+    <form role="form" name="form1" id="form1" method="post" action="{{ path('plg_simplecoupon_admin_coupon_add')}}">
+{% endif %}
+    <input type="hidden" name="mode" value="">
+    {{ form_widget(form._token) }}
+        <div class="col-md-9">
+            <div class="box accordion">
+                <div class="box-header toggle active">
+                    <h3 class="box-title">クーポン情報<svg class="cb cb-angle-down icon_down"> <use xlink:href="#cb-angle-down" /></svg></h3>
+                </div><!-- /.box-header -->
+                <div class="box-body accpanel" style="display: block;">
+                    <div class="order_list form-horizontal">
+                        {# クーポンコード #}
+                        <div class="form-group">
+                            {{ form_label(form.coupon_code) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.coupon_code) }}
+                                {{ form_errors(form.coupon_code) }}
+                            </div>
+                        </div>
+                        {# クーポン名 #}
+                        <div class="form-group">
+                            {{ form_label(form.coupon_name) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.coupon_name) }}
+                                {{ form_errors(form.coupon_name) }}
+                            </div>
+                        </div>
+                        {# 値引き種別 #}
+                        <div class="form-group">
+                            {{ form_label(form.discount_type) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.discount_type) }}
+                                {{ form_errors(form.discount_type) }}
+                            </div>
+                        </div>
+                        {# 値引き額 #}
+                        <div class="form-group">
+                            {{ form_label(form.discount_value) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.discount_value) }}
+                                {{ form_errors(form.discount_value) }}
+                            </div>
+                        </div>
+                        {# 値引き対象 #}
+                        <div class="form-group">
+                            {{ form_label(form.discount_target_type) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.discount_target_type) }}
+                                {{ form_errors(form.discount_target_type) }}
+                            </div>
+                        </div>
+                        {# 有効期間 #}
+                        <div class="form-group">
+                            {{ form_label(form.from_date) }}
+                            <div class="col-sm-9 col-lg-10">
+                                <div class="form-group range">
+                                    {{ form_widget(form.from_date) }}～{{ form_widget(form.to_date) }}
+                                    {{ form_errors(form.from_date) }}
+                                    {{ form_errors(form.to_date) }}
+                                </div>
+                            </div>
+                        </div>
+                        {# 併用可否フラグ #}
+                        <div class="form-group">
+                            {{ form_label(form.combined_use_flg) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.combined_use_flg) }}
+                                <span class="small text-danger">併用利用を「許可する」に設定していても、「値引き対象金額」が異なるクーポン同士の場合は併用利用できませんので、ご注意ください。</span>
+                                {{ form_errors(form.combined_use_flg) }}
+                            </div>
+                        </div>
+                        {# ゲスト利用可否フラグ #}
+                        <div class="form-group">
+                            {{ form_label(form.guest_use_flg) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.guest_use_flg) }}
+                                {{ form_errors(form.guest_use_flg) }}
+                            </div>
+                        </div>
+                        {# 一回利用制限フラグ #}
+                        <div class="form-group">
+                            {{ form_label(form.onetime_use_flg) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.onetime_use_flg) }}
+                                {{ form_errors(form.onetime_use_flg) }}
+                            </div>
+                        </div>
+                        {# クーポン発行数 #}
+                        <div class="form-group">
+                            {{ form_label(form.number_of_issued) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.number_of_issued) }}
+                                {{ form_errors(form.number_of_issued) }}
+                            </div>
+                        </div>
+                        {# 下限金額 #}
+                        <div class="form-group">
+                            {{ form_label(form.bottom_price) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.bottom_price) }}
+                                <span class="small text-danger">商品金額の合計が、ここに入力した金額以上の注文の場合にこのクーポンが利用できます。</span>
+                                {{ form_errors(form.bottom_price) }}
+                            </div>
+                        </div>
+                        {# ステータス #}
+                        <div class="form-group">
+                            {{ form_label(form.status) }}
+                            <div class="col-sm-9 col-lg-10">
+                                {{ form_widget(form.status) }}
+                                {{ form_errors(form.status) }}
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+
+{#
+            // ===================================
+            // 操作部
+            // ===================================
+#}
+            <div class="row hidden-xs hidden-sm">
+                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">登録</button>
+                     <p><a href="{{ path('plg_simplecoupon_admin_coupon_list') }}">戻る</a></p>
+                </div>
+            </div>
+
+        </div><!-- /.col -->
+    </form>
+</div>
+{% endblock %}
+
+{% block modal %}
+
+{% endblock %}

@@ -1,0 +1,43 @@
+Plugin\SimpleCoupon\Entity\ConditionCustomer:
+    type: entity
+    table: plg_simple_coupon_condition_customer
+    repositoryClass: Plugin\SimpleCoupon\Repository\ConditionCustomerRepository
+    indexes:
+        coupon_id:
+            columns:
+                - coupon_id
+    uniqueConstraints:
+        condition_id:
+            columns:
+                - condition_id
+    id:
+        conditionId:
+            type: bigint
+            nullable: false
+            unsigned: true
+            id: true
+            column: condition_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        couponId:
+            type: bigint
+            nullable: true
+            unsigned: true
+            column: coupon_id
+        customerId:
+            type: integer
+            nullable: true
+            unsigned: false
+            column: customer_id
+    manyToOne:
+        Customer:
+            targetEntity: Eccube\Entity\Customer
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                customer_id:
+                    referencedColumnName: customer_id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,44 @@
+Plugin\DPost\Entity\PostQueue:
+    type: entity
+    table: plg_post_queue
+    repositoryClass: Plugin\DPost\Repository\PostQueueRepository
+    id:
+        post_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: post_id
+            generator:
+                strategy: AUTO
+    fields:
+        regist_id:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            column: regist_id
+        news_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: news_id
+        customer_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: customer_id
+        queue_status:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: queue_status
+        create_date:
+            type: datetime
+            nullable: false
+            column: create_date
+        update_date:
+            type: datetime
+            nullable: false
+            column: update_date
+    lifecycleCallbacks: {  }

@@ -1,0 +1,27 @@
+admin.plugin.simplecoupon.coupon.notfound: クーポンが存在しません。
+admin.plugin.simplecoupon.regist.success: クーポンを登録しました。
+admin.plugin.simplecoupon.regist_condition.success: クーポン利用条件を登録しました。
+admin.plugin.simplecoupon.regist_condition.invalid: 無効なユーザIDが指定されました。
+admin.plugin.simplecoupon.regist_condition.exists: 登録済みユーザIDが指定されました。
+admin.plugin.simplecoupon.regist_condition.invalid_product: 無効な商品IDが指定されました。
+admin.plugin.simplecoupon.regist_condition.exists_product: 登録済み商品IDが指定されました。
+admin.plugin.simplecoupon.regist_condition.invalid_category: 無効なカテゴリIDが指定されました。
+admin.plugin.simplecoupon.regist_condition.exists_category: 登録済みカテゴリIDが指定されました。
+admin.plugin.simplecoupon.regist.terms.invalid: 有効期間に誤りがあります。
+admin.plugin.simplecoupon.regist.already_used: 既に利用されているクーポンコードです。
+
+
+front.plugin.simplecoupon.shopping.sameuser: このクーポンは既にご利用いただいています。
+
+front.plugin.simplecoupon.shopping.code.invalid: 無効なクーポンコードです。
+front.plugin.simplecoupon.shopping.terms.over: このクーポンは期限が切れているため、ご利用できません。
+front.plugin.simplecoupon.shopping.bottom_price.under: このクーポンは、商品金額の合計が %d円以上の場合にご利用いただけます。
+front.plugin.simplecoupon.shopping.guest.deny: このクーポンはゲスト購入時には利用できません。
+front.plugin.simplecoupon.shopping.end: このクーポンは終了しました。
+front.plugin.simplecoupon.shopping.already_registered: 登録済みのクーポンコードです。
+front.plugin.simplecoupon.shopping.already_used: 利用済みのクーポンコードです。
+front.plugin.simplecoupon.shopping.combined_use.deny.1: このクーポンは、他のクーポンとの併用はできません。
+front.plugin.simplecoupon.shopping.combined_use.deny.2: 登録済みのクーポンは、他のクーポンとの併用はできません。
+front.plugin.simplecoupon.shopping.combined_use.deny.3: このクーポンは、登録済みのクーポンとの併用はできません。
+front.plugin.simplecoupon.shopping.product.limited: このクーポンは、ご注文の商品ではご利用いただけません。
+

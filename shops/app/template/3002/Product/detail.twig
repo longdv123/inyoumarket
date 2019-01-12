@@ -1,0 +1,332 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'product_page' %}
+
+    {% block javascript %}
+        <script>
+            eccube.classCategories = {{ Product.class_categories|json_encode|raw }};
+
+    // 規格2に選択肢を割り当てる。
+    function fnSetClassCategories(form, classcat_id2_selected) {
+        var $form = $(form);
+        var product_id = $form.find('input[name=product_id]').val();
+        var $sele1 = $form.find('select[name=classcategory_id1]');
+        var $sele2 = $form.find('select[name=classcategory_id2]');
+        eccube.setClassCategories($form, product_id, $sele1, $sele2, classcat_id2_selected);
+    }
+
+    {% if form.classcategory_id2 is defined %}
+    fnSetClassCategories(
+        document.form1, {{ form.classcategory_id2.vars.value|json_encode|raw }}
+        );
+    {% endif %}
+</script>
+
+<script>
+    $(function(){
+        $('.carousel').slick({
+            infinite: false,
+            speed: 300,
+            prevArrow:'<button type="button" class="slick-prev"><span class="angle-circle"><svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right" /></svg></span></button>',
+            nextArrow:'<button type="button" class="slick-next"><span class="angle-circle"><svg class="cb cb-angle-right"><use xlink:href="#cb-angle-right" /></svg></span></button>',
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            responsive: [
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3
+                }
+            }
+            ]
+        });
+
+        $('.slides').slick({
+            dots: true,
+            arrows: false,
+            speed: 300,
+            customPaging: function(slider, i) {
+                return '<button class="thumbnail">' + $(slider.$slides[i]).find('img').prop('outerHTML') + '</button>';
+            }
+        });
+
+        $('#favorite').click(function() {
+            $('#mode').val('add_favorite');
+        });
+
+    });
+</script>
+
+{% endblock %}
+
+{% block main %}
+    {# todo ブロック化}
+    <div id="topicpath" class="row">
+        {% for ProductCategory in Product.ProductCategories %}
+        <ol>
+            <li><a href="{{ url('product_list') }}">全商品</a></li>
+            {% for Category in ProductCategory.Category.path %}
+                <li><a href="{{ url('product_list') }}?category_id={{ Category.id }}">{{ Category.name }}</a></li>
+            {% endfor %}
+            <li>{{ Product.name }}</li>
+        </ol>
+        {% endfor %}
+    </div>
+    #}
+
+    <!-- ▼item_detail▼ -->
+    <div id="item_detail">
+        <div id="detail_wrap" class="row">
+            <!--★画像★-->
+            <div id="item_photo_area" class="col-sm-6">
+                <div id="detail_image_box__slides" class="slides">
+                    {% if Product.ProductImage|length > 0 %}
+                        {% for ProductImage in Product.ProductImage %}
+                            <div id="detail_image_box__item--{{ loop.index }}"><img src="{{ app.config.image_save_urlpath }}/{{ ProductImage|no_image_product }}"/></div>
+                        {% endfor %}
+                        {% else %}
+                        <div id="detail_image_box__item"><img src="{{ app.config.image_save_urlpath }}/{{ ''|no_image_product }}"/></div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <section id="item_detail_area" class="col-sm-6">
+
+                <!--★商品名★-->
+                <h3 id="detail_description_box__name" class="item_name">{{ Product.name }}</h3>
+                <div id="detail_description_box__body" class="item_detail">
+
+                    {% if Product.ProductTag is not empty %}
+                        <!--▼商品タグ-->
+                        <div id="product_tag_box" class="product_tag">
+                            {% for ProductTag in Product.ProductTag %}
+                                <span id="product_tag_box__product_tag--{{ ProductTag.Tag.id }}" class="product_tag_list">{{ ProductTag.Tag }}</span>
+                            {% endfor %}
+                        </div>
+                        <hr>
+                        <!--▲商品タグ-->
+                    {% endif %}
+
+                    <!--★通常価格★-->
+                    {% if Product.hasProductClass -%}
+                        {% if Product.getPrice01Min is not null and Product.getPrice01Min == Product.getPrice01Max %}
+                            <p id="detail_description_box__class_normal_price" class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> <span class="small">税込</span></p>
+                            {% elseif Product.getPrice01Min is not null and Product.getPrice01Max is not null %}
+                            <p id="detail_description_box__class_normal_range_price" class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> ～ <span class="price01_default">{{ Product.getPrice01IncTaxMax|price }}</span> <span class="small">税込</span></p>
+                        {% endif %}
+                        {% else -%}
+                        {% if Product.getPrice01Max is not null %}
+                            <p id="detail_description_box__normal_price" class="normal_price"> 通常価格：<span class="price01_default">{{ Product.getPrice01IncTaxMin|price }}</span> <span class="small">税込</span></p>
+                        {% endif %}
+                    {% endif -%}
+
+                    <!--★販売価格★-->
+                    {% if Product.hasProductClass -%}
+                        {% if Product.getPrice02Min == Product.getPrice02Max %}
+                            <p id="detail_description_box__class_sale_price" class="sale_price text-primary"> <span class="price02_default">{{ Product.getPrice02IncTaxMin|price }}</span> <span class="small">税込</span></p>
+                            {% else %}
+                            <p id="detail_description_box__class_range_sale_price" class="sale_price text-primary"> <span class="price02_default">{{ Product.getPrice02IncTaxMin|price }}</span> ～ <span class="price02_default">{{ Product.getPrice02IncTaxMax|price }}</span> <span class="small">税込</span></p>
+                        {% endif %}
+                        {% else -%}
+                        <p id="detail_description_box__sale_price" class="sale_price text-primary"> <span class="price02_default">{{ Product.getPrice02IncTaxMin|price }}</span> <span class="small">税込</span></p>
+                    {% endif -%}
+
+                    <!--▼商品コード-->
+                    <p id="detail_description_box__item_range_code" class="item_code">商品コード： <span id="item_code_default">
+                        {{ Product.code_min }}
+                        {% if Product.code_min != Product.code_max %} ～ {{ Product.code_max }}{% endif %}
+                        </span> </p>
+                        <!--▲商品コード-->
+
+
+
+                        <form action="?" method="post" id="form1" name="form1">
+
+                            <!--▼買い物かご-->
+                            <div id="detail_cart_box" class="cart_area">
+                                {% if Product.stock_find %}
+
+                                    {# 規格 #}
+                                    {% if form.classcategory_id1 is defined %}
+                                        <ul id="detail_cart_box__cart_class_category_id" class="classcategory_list">
+                                            {# 規格1 #}
+                                            <li>
+                                                {{ form_widget(form.classcategory_id1) }}
+                                                {{ form_errors(form.classcategory_id1) }}
+                                            </li>
+                                            {# 規格2 #}
+                                            {% if form.classcategory_id2 is defined %}
+                                                <li>
+                                                    {{ form_widget(form.classcategory_id2) }}
+                                                    {{ form_errors(form.classcategory_id2) }}
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    {% endif %}
+
+                                    {# 数量 #}
+                                    <dl id="detail_cart_box__cart_quantity" class="quantity">
+                                        <dt>数量</dt>
+                                        <dd>
+                                            {{ form_widget(form.quantity) }}
+                                            {{ form_errors(form.quantity) }}
+                                        </dd>
+                                    </dl>
+
+                                    <div class="extra-form">
+                                        {% for f in form.getIterator %}
+                                            {% if f.vars.name matches '[^plg*]' %}
+                                                {{ form_row(f) }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+
+                                    {# カートボタン #}
+                                    <div id="detail_cart_box__button_area" class="btn_area">
+                                        <ul id="detail_cart_box__insert_button" class="row">
+                                            <li class="col-xs-12 col-sm-8"><button type="submit" id="cart" class="btn btn-primary btn-block prevention-btn prevention-mask">カートに入れる</button></li>
+                                        </ul>
+                                        {% if BaseInfo.option_favorite_product == 1 %}
+                                            <ul id="detail_cart_box__favorite_button" class="row">
+                                                {% if is_favorite == false %}
+                                                    <li class="col-xs-12 col-sm-8"><button type="submit" id="favorite" class="btn btn-info btn-block prevention-btn prevention-mask">お気に入りに追加</button></li>
+                                                    {% else %}
+                                                    <li class="col-xs-12 col-sm-8"><button type="submit" id="favorite" class="btn btn-info btn-block" disabled="disabled">お気に入りに追加済みです</button></li>
+                                                {% endif %}
+                                            </ul>
+                                        {% endif %}
+                                    </div>
+                                    {% else %}
+                                    {# 在庫がない場合は品切れボタンのみ表示 #}
+                                    <div id="detail_cart_box__button_area" class="btn_area">
+                                        <ul class="row">
+                                            <li class="col-xs-12 col-sm-8"><button type="button" class="btn btn-default btn-block" disabled="disabled">ただいま品切れ中です</button></li>
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <!--▲買い物かご-->
+                            {{ form_rest(form) }}
+                        </form>
+
+                        <!--★商品説明★-->
+                        <p id="detail_not_stock_box__description_detail" class="item_comment">{{ Product.description_detail|raw|nl2br }}</p>
+                    </div>
+                    <!-- /.item_detail -->
+
+
+                </section>
+                <!--詳細ここまで-->
+            </div>
+
+            {# フリーエリア #}
+            {% if Product.freearea %}
+                <div id="sub_area" class="row">
+				
+		
+
+                    <div class="col-sm-12 col-sm-offset-0">
+                        <div id="detail_free_box__freearea" class="freearea">{{ include(template_from_string(Product.freearea)) }}</div>
+                    </div>
+                </div>
+				
+				  <!-SNSボタン-->
+				<div id="boxArea" style="display:table;padding:0 0 0 2px;"><div style="width:72px;height:22px;float:left;"><iframe src="//www.facebook.com/v2.0/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fmacrobioticlikes%2F&amp;width&amp;layout=button&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=90&amp;appId=635740679937992" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:90px;" allowTransparency="true"></iframe></div><div style="width:74px;height:22px;float:left;"><a href="https://twitter.com/share" class="twitter-share-button"{count} data-via="inyou_magazine" data-lang="ja" data-dnt="true">ツイート</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></div><div style="width:36px;height:22px;float:left;"><div class="g-plusone" data-size="medium" data-annotation="none"></div>
+<script type="text/javascript">
+  window.___gcfg = {lang: 'ja'};
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();</script></div><div style="width:82px;height:22px;float:left;"><a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="standard-noballoon" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script></div><div style="width:67px;height:22px;float:left;"><a data-pocket-label="pocket" data-pocket-count="none" class="pocket-btn" data-lang="en"></a></div><div style="width:86px;height:22px;float:left;"><span><script type="text/javascript" src="//media.line.me/js/line-button.js?v=20140411" ></script><script type="text/javascript">new media_line_me.LineButton({"pc":true,"lang":"ja","type":"a"});</script></span></div><div style="width:66px;height:22px;float:left;"><script src="//platform.linkedin.com/in.js" type="text/javascript">lang: ja_JP</script><script type="IN/Share"></script></div></div><script type="text/javascript">!function(d,i){if(!d.getElementById(i)){var j=d.createElement("script");j.id=i;j.src="https://widgets.getpocket.com/v1/j/btn.js?v=1";var w=d.getElementById(i);d.body.appendChild(j);}}(document,"pocket-btn-js");</script><br><br>
+				  <!-SNSボタン-->
+				
+				
+            {% endif %}
+            <!-- ▼関連カテゴリ▼ -->
+            <div id="relative_category_box" class="relative_cat">
+                <p>関連カテゴリ</p>
+                {% for ProductCategory in Product.ProductCategories %}
+                    <ol id="relative_category_box__relative_category--{{ ProductCategory.product_id }}_{{ loop.index }}">
+                        {% for Category in ProductCategory.Category.path %}
+                            <li><a id="relative_category_box__relative_category--{{ ProductCategory.product_id }}_{{ loop.parent.loop.index }}_{{ Category.id }}" href="{{ url('product_list') }}?category_id={{ Category.id }}">{{ Category.name }}</a></li>
+                        {% endfor %}
+                    </ol>
+                {% endfor %}
+            </div>
+
+
+
+
+
+            <!-- ▲関連カテゴリ▲ -->
+        </div>
+        
+        <!-- ▼商品一覧▼ -->
+        
+        
+           <!-- ▼item_list▼ -->
+    <div id="item_list">
+	
+        <div class="row no-padding">
+            {% for Product in pagination %}
+                <div id="result_list_box--{{ Product.id }}" class="col-sm-3 col-xs-6">
+                    <div id="result_list__item--{{ Product.id }}" class="product_item">
+                        <a href="{{ url('product_detail', {'id': Product.id}) }}">
+                            <div id="result_list__image--{{ Product.id }}" class="item_photo">
+                                <img src="{{ app.config.image_save_urlpath }}/{{ Product.main_list_image|no_image_product }}">
+                            </div>
+                            <dl id="result_list__detail--{{ Product.id }}">
+                                <dt id="result_list__name--{{ Product.id }}" class="item_name">{{ Product.name }}</dt>
+                                {% if Product.description_list %}
+                                    <dd id="result_list__description_list--{{ Product.id }}" class="item_comment">{{ Product.description_list|raw|nl2br }}</dd>
+                                {% endif %}
+                                {% if Product.hasProductClass %}
+                                    {% if Product.getPrice02Min == Product.getPrice02Max %}
+                                    <dd id="result_list__price02_inc_tax--{{ Product.id }}" class="item_price">
+                                        {{ Product.getPrice02IncTaxMin|price }}
+                                    </dd>
+                                    {% else %}
+                                    <dd id="result_list__price02_inc_tax--{{ Product.id }}" class="item_price">
+                                        {{ Product.getPrice02IncTaxMin|price }} ～ {{ Product.getPrice02IncTaxMax|price }}
+                                    </dd>
+                                    {% endif %}
+                                {% else %}
+                                    <dd id="result_list__price02_inc_tax--{{ Product.id }}" class="item_price">{{ Product.getPrice02IncTaxMin|price }}</dd>
+                                {% endif %}
+                            </dl>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+    <!-- ▲item_list▲ -->
+        
+         <!-- ▲商品一覧▲ -->
+        
+        <!-- ▲item_detail▲ -->
+    {% endblock %}

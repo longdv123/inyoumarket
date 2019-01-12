@@ -1,0 +1,8 @@
+name: BrandingContent
+code: BrandingContent
+version: 1.0.2
+event: BrandingContentEvent
+service:
+    - BrandingContentServiceProvider
+orm.path:
+    - /Resource/doctrine

@@ -1,0 +1,111 @@
+{#
+/*
+ * This file is part of the ProductReview plugin
+ *
+ * Copyright (C) 2016 LOCKON CO.,LTD. All Rights Reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'product_review_page' %}
+
+{% block stylesheet %}
+<style>
+    .product_review_page .dl_table {
+        margin: 0 0 16px;
+    }
+    .product_review_page .dl_table dt {
+        margin-bottom: 5px;
+    }
+    .product_review_page .dl_table dt label {
+        font-weight: bold;
+    }
+    .product_review_page textarea {
+        vertical-align: top;
+    }
+    .product_review_page #product_review_sex .radio {
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .product_review_page #product_review_sex .radio input[type="radio"] {
+        margin-right: 10px;
+    }
+</style>
+{% endblock stylesheet %}
+
+{% block main %}
+<h1 class="page-heading">レビューを書く</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <p id="confirm_box__message">下記の内容で送信してもよろしいでしょうか？<br/>よろしければ、一番下の「送信する」ボタンをクリックしてください。</p>
+
+            <form method="post" action="{{ url('plugin_products_detail_review', { id : Product.id }) }}">
+                {{ form_widget(form._token) }}
+                <div class="dl_table">
+                    <dl>
+                        <dt><label>商品名</label></dt>
+                        <dd class="form-group">
+                            {{ Product.name }}
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>{{ form_label(form.reviewer_name) }}</dt>
+                        <dd class="form-group">
+                            {{ form_widget(form.reviewer_name) }}
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>{{ form_label(form.reviewer_url) }}</dt>
+                        <dd class="form-group">
+                            {{ form_widget(form.reviewer_url) }}
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>{{ form_label(form.recommend_level) }}</dt>
+                        <dd class="form-group">
+                            {% for i in 1..form.recommend_level.vars.value %}★{% endfor %}
+                            {{ form_widget(form.recommend_level, {freeze_display_text:false}) }}
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>{{ form_label(form.sex) }}</dt>
+                        <dd>
+                            <div class="form-group form-inline">
+                                {{ form_widget(form.sex) }}
+                            </div>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>{{ form_label(form.title) }}</dt>
+                        <dd class="form-group">
+                            {{ form_widget(form.title) }}
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>{{ form_label(form.comment) }}</dt>
+                        <dd class="form-group">
+                            {{ form_widget(form.comment) }}
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="row no-padding">
+                    <div class="btn_group col-sm-offset-4 col-sm-4">
+                        <p>
+                            <button type="submit" class="btn btn-primary btn-block" name="mode" value="complete">送信する</button>
+                        </p>
+                        <p>
+                            <button type="submit" class="btn btn-info btn-block" name="mode" value="back">戻る</button>
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+</div>
+{% endblock %}
+

@@ -1,0 +1,129 @@
+{#
+Copyright(c) 2016 GMO Payment Gateway, Inc. All rights reserved.
+http://www.gmo-pg.com/
+#}
+{% block main %}
+    <style type="text/css">
+        .small {
+            font-size: 80%;
+        }
+
+        .caution {
+            color: #DE5D50;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .width222 {
+            width: 222px;
+            display: inline-block;
+        }
+
+        .width54 {
+            width: 70px;
+            display: inline-block;
+        }
+
+        .area {
+            width: 433px;
+            height: 134px;
+        }
+
+        .warningError {
+            color: #F00;
+        }
+
+        .floatLeft {
+            float: left;
+        }
+    </style>
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">GMOペイメント設定</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="form-group">
+                <label class="col-sm-2 control-label required">処理区分 <span class='warningError'>*</span></label>
+
+                <div class="col-sm-10 {% if form.JobCd.vars.errors is not empty %}has-error{% endif %}">
+                    {{ form_widget(form.JobCd) }}
+                    {{ form_errors(form.JobCd) }}
+                    <p class='small'>
+                        仮売上(AUTH)・・・カードの与信枠を確保し承認番号を得ること。※仮売上のデータ保持期間は90日です。実売上処理を行わないとカード会社への売上データが作成されません。</p>
+
+                    <p class='small'>即時売上(CAPTURE)・・・カードの与信枠を確保し承認番号を得て、カード会社への売上データの作成依頼をすること。（仮売上+実売上の処理になります 。）</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label required">支払期限</label>
+
+                <div class="col-sm-10 {% if form.PaymentTermSec.vars.errors is not empty %}has-error{% endif %}">
+                    {{ form_widget(form.PaymentTermSec) }} 秒 <span class='caution'>（半角数字で入力）</span>
+                    {{ form_errors(form.PaymentTermSec) }}
+                    <p class='small'>※省略時は、ショップ管理画面のショップ情報に設定された支払期限で処理されます。</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label required">サービス名（店名） <span class='warningError'>*</span></label>
+
+                <div class="col-sm-10 {% if form.ServiceName.vars.errors is not empty %}has-error{% endif %}">
+                    {{ form_widget(form.ServiceName) }}<span class='caution'>（上限48文字）</span>
+                    {{ form_errors(form.ServiceName) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label required">表示電話番号 <span class='warningError'>*</span></label>
+
+                <div class="col-sm-10 {% if form.ServiceTel_1.vars.errors is not empty %}has-error{% endif %} {% if form.ServiceTel_2.vars.errors is not empty %}has-error{% endif %} {% if form.ServiceTel_3.vars.errors is not empty %}has-error{% endif %}">
+                    {{ form_widget(form.ServiceTel_1) }} − {{ form_widget(form.ServiceTel_2) }}
+                    − {{ form_widget(form.ServiceTel_3) }} <span class='caution'>（半角数字で入力）</span>
+                    {{ form_errors(form.ServiceTel_1) }}{{ form_errors(form.ServiceTel_2) }}{{ form_errors(form.ServiceTel_3) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label required">決済完了案内タイトル</label>
+
+                <div class="col-sm-10 {% if form.order_mail_title1.vars.errors is not empty %}has-error{% endif %}">
+                    {{ form_widget(form.order_mail_title1) }}<span class='caution'>（上限50文字）</span>
+
+                    <p class='small'>ご注文完了画面とご注文完了メールに、支払いに関する案内文を入れる場合にはタイトルと本文を入れて下さい。(両方入っていない場合は有効になりません。)</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label required">決済完了案内本文</label>
+
+                <div class="col-sm-10 {% if form.order_mail_body1.vars.errors is not empty %}has-error{% endif %}">
+                    {{ form_widget(form.order_mail_body1) }} <span class='caution'>（上限1000文字）</span>
+                    {{ form_errors(form.order_mail_body1) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label required">自由項目1</label>
+
+                <div class="col-sm-10 {% if form.ClientField1.vars.errors is not empty %}has-error{% endif %}">
+                    {{ form_widget(form.ClientField1) }}<span class='caution'>（上限100文字）</span>
+                    {{ form_errors(form.ClientField1) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label required">自由項目2</label>
+
+                <div class="col-sm-10 {% if form.ClientField2.vars.errors is not empty %}has-error{% endif %}">
+                    {{ form_widget(form.ClientField2) }}<span class='caution'>（上限100文字）</span>
+                    {{ form_errors(form.ClientField2) }}
+                </div>
+            </div>
+
+            {{ form_widget(form.RetURL) }}
+            {{ form_widget(form.Version) }}
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,91 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% block main %}
+    <div id="" class="main_only">
+        <div id="privacy_wrap" class="container-fluid inner no-padding">
+            <div id="">
+                <h1 class="page-heading">プライバシーポリシー</h1>
+                <div id="privacy_box" class="container-fluid">
+                    <div id="privacy_box__body" class="row">
+                        <div id="privacy_box__body_inner" class="col-md-12 col-md-offset-0">
+                            <p id="privacy_box__declaration">
+                                {% if BaseInfo.company_name is not null %}
+                                    {{ BaseInfo.company_name }}は、
+                                {% endif %}
+                                個人情報保護の重要性に鑑み、「個人情報の保護に関する法律」及び本プライバシーポリシーを遵守し、お客さまのプライバシー保護に努めます。
+                            </p>
+                            <p id="privacy_box__lead">
+<ol>
+  <li><h3 id="privacy_box__lead_header">個人情報とは</h3>
+    個人に関する情報で、氏名、住所、電話番号、メールアドレス、購入履歴など個人を特定できる情報、またはその可能性のある情報の事です。また、他の情報との組み合わせによって個人が特定できる情報も含みます（業種等）<br>
+    <br>
+  </li>
+  <li><h3 id="privacy_box__lead_header">個人情報の収集について</h3>
+  inyoumarketオンラインショップのサイト（以下、当サイトといいます）を閲覧する場合、お客様に関するいかなる情報も入力や開示する必要はございませんので、匿名のままご自由にご利用いただけます。但し、会員登録や商品購入時、お問合せ時、商品レビュー等で、お客様の氏名、住所、電話番号、メールアドレス等の入力をお願いしております。それらの情報の利用目的につきましては、「3.個人情報の利用目的について」を、管理につきましては、「4.個人情報の管理について」をご参照下さい。<br>
+  <br>
+  </li>
+  <li><h3 id="privacy_box__lead_header">個人情報の利用目的について</h3>
+    当店は個人情報を以下の目的で利用させていただきます。<br>
+    <ul>
+      <li>お客様への商品の発送および代金の請求また、代金のお支払いに関連してご指定いただいたクレジットカード番号、銀行口座などのお支払情報等。</li>
+      <li>ご注文の内容や配送方法などのご確認</li>
+      <li>当店が行うキャンペーンや商品、サービスのご案内</li>
+      <li>お客さまから寄せられたご意見やアンケートの結果、ご利用履歴等</li>
+      <li>次回の会員ログインが容易に行えるよう、ログイン情報の保持の為。Cookie使用しており、保持するか否かはお客様で任意に選択可</li>
+      <li>その他サイト運営上必要な場合に利用<br>
+        <br>
+      </li>
+    </ul>
+  </li>
+  <li><h3 id="privacy_box__lead_header">個人情報の管理について</h3>
+    当店は以下の体制で個人情報を管理します。
+    <ul>
+      <li>個人情報の利用を業務上必要な者だけに制限し、個人情報が含まれる内容の管理を徹底致します。 但し、お客様へ商品やサービスを提供する等の業務遂行上、個人情報の一部を外部の委託先へ提供する場合があります。その場合、業務委託先が適切に個人情報を取り扱うように管理いたします。</li>
+      <li>不要になった個人情報は、随時削除していきます。<br>
+        <br>
+      </li>
+    </ul>
+  </li>
+  <li><h3 id="privacy_box__lead_header">個人情報の開示について</h3>
+    当店は、お客様の同意がない限り、個人情報を第三者に開示することはありません。ただし、以下の事例に該当する場合はその限りではありません。
+    <ul>
+      <li>官庁、裁判所、検察官、警察、弁護士会、消費者センター、またはそれらに準じる権限を有する機関から要請があった場合。</li>
+      <li>法令に特別の規定がある場合。</li>
+      <li>法令や当店のご利用規約・注意事項に反する行動から、当店の権利、財産またはサービスを保護または防禦する必要があり、本人の同意を得ることができない場合。</li>
+    </ul>
+    尚、商品の配送等、お客様との取引を行うにあたり、運送業者等の必要な外部委託を行う場合は第三者提供にはあたりません。<br>
+    <br>
+  </li>
+  <li><h3 id="privacy_box__lead_header">適用範囲</h3>
+    以上のプライバシーポリシーに関する適用範囲は、当サイト内において適用されます。<br>
+    原則として「http://inyoumarket.com/」のアドレスを含むページが当サイト内となります。</li>
+</ol></p>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

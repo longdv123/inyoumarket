@@ -1,0 +1,68 @@
+{#
+#}
+{% extends 'default_frame.twig' %}
+
+{% block title %}クーポン管理{% endblock %}
+{% block sub_title %}クーポン登録{% endblock %}
+
+{#% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %#}
+{#% form_theme searchProductModalForm 'Form/bootstrap_3_horizontal_layout.html.twig' %#}
+
+{% block main %}
+<h1 class="page-heading">クーポンの利用登録</h1>
+<div class="container-fluid">
+    <div id="coupon_entry" class="row">
+        <form method="post" action="{{ path('plg_simplecoupon_front_coupon') }}">
+            {{ form_widget(form._token) }}
+            <div id="coupon_entry__body" class="col-sm-10 col-sm-offset-1">
+               	<p class=" col-sm-offset-4">利用するクーポンコードを入力してください。</p>
+                <div id="coupon_entry__body_inner" class="no-padding col-sm-offset-4 col-sm-6">
+                    {{ form_widget(form.coupon_code) }}
+                    {{ form_errors(form.coupon_code) }}
+                </div>
+                
+                <div id="coupon_entry_footer" class="row no-padding">
+                    <div id="coupon_entry__button_menu" class="btn_group col-sm-offset-4 col-sm-4">
+                        <p id="coupon_entry__insert_button">
+                            <button type="submit" class="btn btn-primary btn-block prevention-btn prevention-mask">
+                                登録する
+                            </button>
+                        </p>
+                        <p id="coupon_entry__back_button"><a href="{{ path('shopping') }}" class="btn btn-info btn-block">戻る</a></p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="result_list_main__list" class="table_list row">
+    <div id="result_list_main__list_body" class="table-responsive with-border  col-sm-offset-2 col-sm-8" >
+        <table class="table table-striped center-block ">
+            <thead>
+                <tr id="result_list_main__header">
+                    <th id="result_list_main__header_code" >クーポンコード</th>
+                    <th id="result_list_main__header_discount" >値引き金額</th>
+                    <th class="col-sm-2">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+{% for CouponOrder in coupon_list %}
+				<tr id="result_list_main__item--{{ CouponOrder.couponOrderId }}">
+                    <td id="result_list_main__code--{{ CouponOrder.couponOrderId }}">{{ CouponOrder.Coupon.couponCode }}</td>
+                    <td id="result_list_main__discount--{{ CouponOrder.couponOrderId }}">{{ CouponOrder.discountPrice|price }}</td>
+                    <td id="result_list_main__item_menu_box--{{ CouponOrder.couponOrderId }}" class="icon_edit">
+                    	<a href="{{ path('plg_simplecoupon_front_coupon_delete', { id : CouponOrder.couponOrderId }) }}" {{ csrf_token_for_anchor() }} data-method="delete" data-message="このクーポン情報の利用を取り消してもよろしいですか？">取り消し</a>
+                    </td>
+                </tr>
+{% endfor %}
+			</tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block modal %}
+
+{% endblock %}

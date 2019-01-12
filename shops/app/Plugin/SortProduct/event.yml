@@ -1,0 +1,7 @@
+
+Product/list.twig:
+    - [sortProduct, NORMAL]
+
+front.product.index.search:
+    - [setDQL, NORMAL]
+

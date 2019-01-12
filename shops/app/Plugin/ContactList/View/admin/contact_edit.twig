@@ -1,0 +1,188 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['admin_contacts', 'admin_contacts_edit'] %}
+
+{% block title %}問い合わせ管理{% endblock %}
+{% block sub_title %}問い合わせ詳細{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+    <script>
+        $(function() {
+        });
+    </script>
+{% endblock javascript %}
+
+{% block main %}
+<div class="row" id="aside_wrap">
+    <form name="form1" id="form1" method="post" autocomplete="off">
+    {{ form_widget(form._token) }}
+            <div id="detail_wrap" class="col-md-12">
+                <div id="detail_box" class="box form-horizontal">
+                    <div id="detail_box__body" class="box-body">
+                        <div id="detail_box__id" class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">問い合わせ番号</label>
+                            <div class="col-sm-9 col-lg-10 padT07">
+                                {{ plg_contacts.id }}
+                            </div>
+                        </div>
+                        <div id="detail_box__status" class="form-group">
+                            {{ form_label(form.status) }}
+                            <div class="col-sm-9 col-lg-10 padT07">
+                                {{ form_widget(form.status) }}
+                                {{ form_errors(form.status) }}
+                            </div>
+                        </div>
+                        <div id="detail_box__ins_time" class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">問い合わせ日時</label>
+                            <div class="col-sm-9 col-lg-10 padT07">
+                                {{ plg_contacts.ins_time|date('Y/m/d H:i') }}
+                            </div>
+                        </div>
+                        <div id="detail_box__name" class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">名前</label>
+                            <div class="col-sm-9 col-lg-10 padT07">
+                                {{ plg_contacts.name01 }}{{ plg_contacts.name02 }}
+                            </div>
+                        </div>
+                        <div id="detail_box__kana" class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">名前フリガナ</label>
+                            <div class="col-sm-9 col-lg-10 padT07">
+                                {{ plg_contacts.kana01 }}{{ plg_contacts.kana02 }}
+                            </div>
+                        </div>
+                        <div id="detail_box__address" class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">住所</label>
+                            <div class="col-sm-9 col-lg-10 padT07">
+                                {% if plg_contacts.zip01 is not null %}
+                                    〒{{ plg_contacts.zip01 }} - {{ plg_contacts.zip02 }}
+                                {% endif %}
+                                {% if plg_contacts.pref is not null %}
+                                    {{ plg_contacts.pref }}
+                                {% endif %}
+                                {% if plg_contacts.addr01 is not null %}
+                                    {{ plg_contacts.addr01 }}
+                                {% endif %}
+                                {% if plg_contacts.addr02 is not null %}
+                                    {{ plg_contacts.addr02 }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div id="detail_box__tel" class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">電話番号</label>
+                            <div class="col-sm-9 col-lg-10 padT07">
+                                {% if plg_contacts.tel01 is not null %}
+                                    {{ plg_contacts.tel01 }} - {{ plg_contacts.tel02 }} - {{ plg_contacts.tel03 }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div id="detail_box__email" class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">メールアドレス</label>
+                            <div class="col-sm-9 col-lg-10 padT07">
+                                {% if plg_contacts.email is not null %}
+                                    <a href="mailto:{{ plg_contacts.email }}">{{ plg_contacts.email }}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div id="detail_box__kind" class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">問い合わせ種類</label>
+                            <div class="col-sm-9 col-lg-10 padT07">
+                                {{ plg_contacts.kind }}
+                            </div>
+                        </div>
+                        <div id="detail_box__contents" class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">問い合わせ内容</label>
+                            <div class="col-sm-9 col-lg-10 padT07">
+                                {{ plg_contacts.contents|nl2br }}
+                            </div>
+                        </div>
+                        <div id="detail_box__memo" class="form-group">
+                            {{ form_label(form.memo) }}
+                            <div class="col-sm-9 col-lg-10 padT07">
+                                {{ form_widget(form.memo) }}
+                                {{ form_errors(form.memo) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="detail__insert_button" class="row btn_area">
+                        <p class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
+                            <button type="submit" class="btn btn-primary btn-block btn-lg" name="mode" value="register">問い合わせ情報を更新</button>
+                        </p>
+                        <!-- /.col -->
+                    </div>
+                </div><!-- /.box-body -->
+                <div id="detail__back_button" class="row hidden-xs hidden-sm">
+                    <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 text-center btn_area">
+                        {% if id is not null %}
+                            <p><a href="{{ path('admin_contacts_page', {'page_no': app.request.query.get("page_no")}) }}">戻る</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div><!-- /.box -->
+    </form>
+{% for ContactReply in plg_contacts.ContactReplies %}
+    <div id="detail_wrap" class="col-md-12">
+        <div id="detail_box" class="box form-horizontal">
+            <div id="detail_box__body" class="box-body">
+                <div id="" class="form-group">
+                    <label class="col-sm-3 col-lg-2 control-label">返信日時</label>
+                    <div class="col-sm-9 col-lg-10 padT07">
+                        {{ ContactReply.ins_time|date('Y/m/d H:i') }}
+                    </div>
+                </div>
+                <div id="" class="form-group">
+                    <label class="col-sm-3 col-lg-2 control-label">送信者</label>
+                    <div class="col-sm-9 col-lg-10 padT07">
+                        {{ ContactReply.reply_member }}
+                    </div>
+                </div>
+                <div id="" class="form-group">
+                    <label class="col-sm-3 col-lg-2 control-label">件名</label>
+                    <div class="col-sm-9 col-lg-10 padT07">
+                        {{ ContactReply.reply_subject }}
+                    </div>
+                </div>
+                <div id="" class="form-group">
+                    <label class="col-sm-3 col-lg-2 control-label">本文</label>
+                    <div class="col-sm-9 col-lg-10 padT07">
+                        {{ ContactReply.reply_contents|nl2br }}
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.box-body -->
+    </div><!-- /.box -->
+{% endfor %}
+    <div id="detail__insert_button" class="row btn_area">
+        <p class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4 text-center">
+            <a href="{{ path('admin_contacts_reply', {'contact_id': plg_contacts.id, 'page_no' : app.request.query.get("page_no")}) }}" class="btn btn-primary btn-block btn-lg">返信する</a>
+        </p>
+        <!-- /.col -->
+    </div>
+
+
+
+
+</div>
+{% endblock %}

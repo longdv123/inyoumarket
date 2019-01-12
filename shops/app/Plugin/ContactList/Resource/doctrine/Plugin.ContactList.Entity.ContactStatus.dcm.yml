@@ -1,0 +1,19 @@
+Plugin\ContactList\Entity\ContactStatus:
+    type: entity
+    table: mtb_plg_contact_status
+    repositoryClass: Plugin\ContactList\Repository\ContactStatusRepository
+    id:
+        id:
+            type: smallint
+            nullable: false
+            unsigned: false
+            id: true
+    fields:
+        name:
+            type: text
+            nullable: true
+        rank:
+            type: smallint
+            nullable: false
+            unsigned: false
+    lifecycleCallbacks: {  }

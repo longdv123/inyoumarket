@@ -1,0 +1,15 @@
+#RewriteEngine On
+#RewriteCond %{REMOTE_ADDR} !^(122\.218\.250\.122)$
+#RewriteCond %{REMOTE_ADDR} !^(60\.73\.171\.46)$
+#RewriteCond %{REQUEST_FILENAME} !^(.*)\.(png)$
+#RewriteCond %{REQUEST_URI} !=/maintenance.html
+#RewriteRule .* /maintenance.html [R=302,L]
+
+order deny,allow
+allow from all
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !^(.*)\.(gif|png|jpg|css|ico|js)$ [NC]
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>

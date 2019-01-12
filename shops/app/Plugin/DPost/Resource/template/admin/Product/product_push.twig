@@ -1,0 +1,140 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['product', 'product_post'] %}
+
+{% block title %}商品管理{% endblock %}
+{% block sub_title %}入荷通知{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+<script src="{{ app.config.admin_urlpath }}/assets/js/vendor/spin.min.js"></script>
+<script>
+$(function() {
+
+    var opts = {
+        lines: 13,
+        length: 30,
+        width: 2,
+        radius: 12,
+        corners: 1,
+        rotate: 0,
+        direction: 1,
+        color: '#BBB',
+        speed: 1,
+        trail: 67,
+        shadow: true,
+        hwaccel: false,
+        className: 'spinner',
+        zIndex: 2e9,
+        top: top
+    };
+
+    ImageSpinner = new Spinner(opts).spin(document.getElementById('spinner'));
+    ImageSpinner.stop();
+
+    $('.push-button').click(function() {
+        $('.push-button').attr('disabled', 'disabled');
+        ImageSpinner.spin(document.getElementById('spinner'));
+    });
+});
+</script>
+{% endblock javascript %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">入荷情報管理</h3>
+                </div><!-- /.box-header -->
+                <div id="spinner"></div>
+                <div class="box-body">
+                    <form name="form1" id="form1" method="post" action="">
+                        <div class="table_list">
+                            <div class="table-responsive with-border">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>商品名</th>
+                                            <th>現在の在庫</th>
+                                            <th>入荷通知</th>
+                                            <th>状態 (クリック数/送信数)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for ProductPush in ProductPushList %}
+                                    {% set Product = ProductPush.Product %}
+                                        <tr>
+                                            <td>{{ ProductPush.product_id }}</td>
+                                            <td>
+                                                {{ Product.name }}
+                                            </td>
+                                            <td>
+                                            {% if Product.getStockMin == Product.getStockMax %}
+                                                {% if Product.getStockMin == "" %}
+                                                    無制限
+                                                {% else %}
+                                                    {{ Product.getStockMin }}
+                                                {% endif %}
+                                            {% else %}
+                                                {% if Product.getStockMin == "" %}
+                                                    {{ Product.getStockUnlimitedMin }}～無制限
+                                                {% else %}
+                                                    {{ Product.getStockMin }}～{{ Product.getStockMax }}
+                                                {% endif %}
+                                            {% endif %}
+                                            </td>
+                                            <td style="text-align:center">
+                                                <button type="submit"  class="btn btn-default btn-sm push-button" {% if ProductPush.wait_count == 0 %}disabled{% endif %} onclick="location.href='{{ url('admin_product_push_send', {id: ProductPush.product_id}) }}'; return false;">送信</button>
+                                            </td>
+                                            <td>
+                                                送信対象：{{ ProductPush.wait_count }}件<br>
+                                                送信済(
+                                                {% if ProductPush.click == "" %}
+                                                {{ 0 }}
+                                                {% else %}
+                                                {{ ProductPush.click }}
+                                                {% endif %}/
+                                                {% if ProductPush.push_count == "" %}
+                                                {{ 0 }}
+                                                {% else %}
+                                                {{ ProductPush.push_count }}
+                                                {% endif %})
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div><!-- /.box -->
+
+        </div>
+    </div>
+
+{% endblock %}

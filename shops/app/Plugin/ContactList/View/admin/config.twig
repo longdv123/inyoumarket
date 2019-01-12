@@ -1,0 +1,79 @@
+{#
+* Plugin Name : SalesRanking
+*
+* Copyright (C) 2015 BraTech Co., Ltd. All Rights Reserved.
+* http://www.bratech.co.jp/
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+#}
+
+{% extends 'default_frame.twig' %}
+
+{% set menus = ['admin_contacts', 'admin_contacts_status'] %}
+
+{% block title %}お問い合わせ管理{% endblock %}
+{% block sub_title %}対応ステータス設定{% endblock %}
+
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block javascript %}
+
+{% endblock javascript %}
+
+{% block main %}
+    <form id="form2" name="form2" method="post" action="{{ url('plugin_ContactList_config') }}">
+        {{ form_widget(form._token) }}
+        <div class="row" id="aside_wrap">
+            <div id="result_list_box" class="col-md-9">
+                <div id="result_list_box__body" class="box">
+                    <div id="result_list_box__header" class="box-header">
+                        <div class="read">
+                            マスターデータの値を設定できます。<br />
+                            重複したIDを登録することはできません。<br />
+                            空のIDを登録すると、値は削除されます。<br />
+                            設定値によってはサイトが機能しなくなる場合もありますので、十分ご注意下さい。
+                        </div>
+                    </div>
+
+                    <div id="result_list__body_inner" class="table-responsive">
+                        <table id="result_list__list" class="table table-bordered table-striped">
+                            <tr id="result_list__list_header">
+                                <th id="result_list__header_id">ID</th>
+                                <th id="result_list__header_name">Name</th>
+                                <th>Rank</th>
+                            </tr>
+                            {% for contact_status in form.contact_status %}
+                                <tr id="result_list__item--{{ contact_status.vars.name }}">
+                                    <td id="result_list__id--{{ contact_status.vars.name }}">
+                                        {{form_widget(contact_status.id)}}
+                                    </td>
+                                    <td id="result_list__name--{{ contact_status.vars.name }}">
+                                        {{form_widget(contact_status.name)}}
+                                    </td>
+                                    <td id="result_list__rank">
+                                        {{form_widget(contact_status.rank)}}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div><!-- /.box-body -->
+            </div>
+
+            <div id="common_box" class="col-md-3">
+                <div class="col_inner" id="aside_column">
+                    <div id="common_button_box" class="box no-header">
+                        <div id="common_button_box__body" class="box-body">
+                            <div id="common_button_box__insert_button"  class="row text-center">
+                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                    <button class="btn btn-primary btn-block btn-lg" onclick="document.form2.submit();">登録</button>
+                                </div>
+                            </div>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                </div>
+            </div><!-- /.col -->
+        </div>
+    </form>
+{% endblock %}

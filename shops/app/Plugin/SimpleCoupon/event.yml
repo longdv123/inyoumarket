@@ -1,0 +1,62 @@
+
+eccube.event.route.shopping.response:
+    - [onEccubeEventRouteShoppingResponse, NORMAL]
+
+eccube.event.route.shopping_shipping_change.response:
+    - [onEccubeEventRouteShoppingResponse, NORMAL]
+
+eccube.event.route.shopping_confirm.controller:
+    - [onEccubeEventRouteShoppingConfirmController, NORMAL]
+    
+eccube.event.route.admin_order_edit.response:
+    - [onEccubeEventRouteAdminOrderEditResponse, NORMAL]
+    
+eccube.event.route.mypage_history.response:
+    - [onEccubeEventRouteMypageHistoryResponse, NORMAL]
+
+front.shopping.index.initialize:
+    - [onFrontShoppingIndexInitialize, NORMAL]
+    
+front.shopping.confirm.initialize:
+    - [onFrontShoppingConfirmInitialize, NORMAL]
+    
+front.shopping.confirm.processing:
+    - [onFrontShoppingConfirmProcessing, NORMAL]
+
+service.shopping.notify.complete:
+    - [onServiceShoppingNotifyComplete, NORMAL]
+    
+front.shopping.shipping.change.initialize:
+    - [onFrontShoppingShippingChangeInitialize, NORMAL]
+
+front.shopping.shipping.multiple.change.initialize:
+    - [onFrontShoppingShippingChangeInitialize, NORMAL]
+
+front.shopping.delivery.initialize:
+    - [onFrontShoppingShippingChangeInitialize, NORMAL]
+
+front.shopping.shipping.edit.change.initialize:
+    - [onFrontShoppingShippingChangeInitialize, NORMAL]
+
+admin.setting.shop.delivery.edit.initialize:
+    - [onAdminSettingShopDeliveryEditInitialize, NORMAL]
+
+
+# 配送方法（業者）変更
+front.shopping.delivery.complete:
+    - [onFrontShoppingDeliveryComplete, NORMAL]
+    
+## 支払い方法判定
+front.shopping.payment.complete:
+    - [onFrontShoppingPaymentComplete, NORMAL]
+
+## 配送先設定
+front.shopping.shipping.complete:
+    - [onFrontShoppingShippingComplete, NORMAL]
+front.shopping.shipping.edit.complete:
+    - [onfrontShoppingShippingEditComplete, NORMAL]
+front.shopping.shipping.multiple.complete:
+    - [onFrontShoppingMultipleComplete, NORMAL]  
+
+
+

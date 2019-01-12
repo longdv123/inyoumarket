@@ -1,0 +1,26 @@
+Plugin\DPost\Entity\CustomerEx:
+    type: entity
+    table: plg_customer_ex
+    repositoryClass: Plugin\DPost\Repository\CustomerExRepository
+    id:
+        customerExId:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: customer_ex_id
+            generator:
+                strategy: AUTO
+    fields:
+        customer_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: customer_id
+        regist_id:
+            type: text
+            nullable: false
+            length: null
+            fixed: false
+            column: regist_id
+    lifecycleCallbacks: {  }

@@ -1,0 +1,74 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) 2000-2015 LOCKON CO.,LTD. All Rights Reserved.
+
+http://www.lockon.co.jp/
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#}
+{% extends 'default_frame.twig' %}
+
+{% block stylesheet %}
+<link rel="manifest" href="{{ app.config.root_urlpath }}/plugin/dpost/manifest.json">
+{% endblock %}
+
+{% set mypageno = 'dpost' %}
+
+{% set body_class = 'mypage' %}
+
+{% block javascript %}
+
+
+<script src="{{ app.config.root_urlpath }}/plugin/dpost/main.js" charset="UTF-8"></script>
+{% endblock %}
+
+{% block main %}
+    <h1 class="page-heading">マイページ/通知設定</h1>
+    <div class="container-fluid">
+
+        {% include 'Mypage/navi.twig' %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <p class="intro">通知設定</p>
+                    <div id="deliveradd_select" class="row">
+                        <div class="col-sm-10 col-sm-offset-1">
+                            <form name="form1" role="form" novalidate class="form-horizontal" id="form1" method="post" action="">
+                                {{ form_widget(form._token) }}
+                                <input type="hidden" name="regist_id" id="regist_id" value="" />
+                                <input type="hidden" name="my_regist_id" id="my_regist_id" value="{{ regist_id }}" />
+                                <input type="hidden" name="mode" id="mode" value="setting" />
+                                <p>
+                                    <button id="js-push-button" class="js-push-button btn btn-default btn-sm prevention-mask">通知の有効化</button>
+                                </p>
+                            </form>
+
+                            <p id="alert_msg" {% if regist_id == "" %}style="display: none;"{% endif %}>
+                                <span class="text-danger">別の端末で既に有効化されています。<br>通知を受ける端末を現在ご利用の端末へ変更する場合は、「通知の有効化」をクリックしてください。</span>
+                            </p>
+
+                            <p>
+                            通知を有効にすることにより、ショップの情報を直接受け取ることができます<br>
+                            ※Chromeブラウザでアクセスした場合のみご利用頂けます。
+                            </p>
+                        </div>
+                    </div><!-- /.row -->
+
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+Plugin\DPost\Entity\ProductPush:
+    type: entity
+    table: plg_product_push
+    repositoryClass: Plugin\DPost\Repository\ProductPushRepository
+    id:
+        productPushId:
+            type: integer
+            nullable: false
+            unsigned: false
+            id: true
+            column: product_push_id
+            generator:
+                strategy: AUTO
+    fields:
+        product_id:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: product_id
+        wait_count:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: wait_count
+        push_count:
+            type: integer
+            nullable: false
+            unsigned: false
+            column: push_count
+        click:
+            type: integer
+            nullable: false
+            unsigned: false
+    oneToOne:
+        Product:
+            targetEntity: Eccube\Entity\Product
+            joinColumn:
+                name: product_id
+                referencedColumnName: product_id
+    lifecycleCallbacks: {  }

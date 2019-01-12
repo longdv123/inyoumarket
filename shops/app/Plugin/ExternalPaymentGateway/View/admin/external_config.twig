@@ -1,0 +1,120 @@
+{#
+Copyright(c) 2015 Telecom and Et Payment Gateway, Inc. All rights reserved.
+#}
+{% extends 'default_frame.twig' %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        self.moveTo(20, 20);
+        self.focus();
+    </script>
+{% endblock %}
+
+{% block title %}{{ tpl_subtitle }}{% endblock %}
+
+{#<!--\src\Eccube\Resource\template\admin\Form-->#}
+{% form_theme form 'Form/bootstrap_3_horizontal_layout.html.twig' %}
+{#<!--完了メッセージやエラーメッセージはdefaultframe.twig内のalert.twigで表示させている-->#}
+{% block main %}
+
+    <div class="row" id="aside_wrap">
+		{#<!--★★メインコンテンツ★★-->#}
+		{#<table width="500" border="0" cellspacing="0" cellpadding="0" summary=" ">#}
+        <form name="form1" role="form" novalidate class="form-horizontal" id="point_form" method="post" action="">
+		{#<form name="form1" id="form1" method="post" action="">#}
+		{#<input type="hidden" name="mode" value="edit">#}
+            {{ form_widget(form._token) }}
+
+			{#<!--▼登録テーブルここから-->#}
+            <div class="col-md-9">
+                <div class="box">
+                    <div class="box-body">
+                        <div>
+						{{ app.config.ExternalPaymentGateway.const.EXTERNAL_CREDIT_MODULE_NAME }}をご利用頂く為には、{{ app.config.ExternalPaymentGateway.const.EXTERNAL_CREDIT_COMPANY_NAME }}とご契約を行って頂く必要があります。 <br/>
+						お申込につきましては、下記までお問合せください。<br /><br />
+						TEL：{{ app.config.ExternalPaymentGateway.const.EXTERNAL_CREDIT_COMPANY_TEL }}<br />
+						Mail：<a href="mailto:{{ app.config.ExternalPaymentGateway.const.EXTERNAL_CREDIT_COMPANY_MAIL }}">{{ app.config.ExternalPaymentGateway.const.EXTERNAL_CREDIT_COMPANY_MAIL }}</a><br />
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+                <div class="box">
+                    <div class="box-header">
+					    <h3 class="box-title">決済データ送信先URL</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+						{{ app.config.ExternalPaymentGateway.const.EXTERNAL_CREDIT_COMPANY_NAME }}より送られる設定依頼書に記載するURLは下記となりますのでご確認下さい。
+					    <table id="basis-index-holiday">
+					        <tr>
+					            <th>都度決済</th>
+					            <td>{{ recv_url }}</td>
+					        </tr>
+							<br />
+					        <tr>
+					            <th>スピード決済</th>
+					            <td>{{ recv_url }}</td>
+					        </tr>
+							<br />
+					    </table><br>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+                <div class="box">
+                    <div class="box-header">
+					    <h3 class="box-title">決済データ登録</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+					    <table summary="登録情報" id="basis-index-basis">
+					        <tr>
+					            <th>利用決済<span class="text-danger"> *</span></th>
+					            <td>
+									<!--{assign var=key value="payment"}-->
+									<span class="attention"><!--{$arrErr[$key]}--></span>
+									<!--{assign var=key value="credit"}-->
+					                                {{ form_widget(form.credit_payment) }}
+					                                {{ form_errors(form.credit_payment) }}
+					            </td>
+					        </tr>
+					        <tr>
+					            <th>クライアントIP<span class="text-danger"> *</span></th>
+					            <td>
+									<!--{assign var=key value="client_ip"}-->
+									<span class="text-danger"><!--{$arrErr[$key]}--></span>
+					                                {{ form_widget(form.clientip) }}
+					                                {{ form_errors(form.clientip) }}
+							</tr>
+						</table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col-md-9 -->
+			{#<!--{* ▲登録テーブルここまで *}-->#}
+			{#<!--{* ▲登録ボタンエリアここから *}-->#}
+            <div class="col-md-3" id="aside_column">
+                <div class="col_inner">
+                    <div class="box no-header">
+                        <div class="box-body">
+                            <div class="row text-center">
+                                <div class="col-sm-6 col-sm-offset-3 col-md-12 col-md-offset-0">
+                                    <button class="btn btn-primary btn-block btn-lg" onclick="document.form1.submit();return false;">
+                                        この内容で登録する
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+			{#<!--{* ▲登録ボタンエリアここまで *}-->#}
+		</div>
+		{#<!--★★メインコンテンツ★★-->#}
+
+{% endblock %}

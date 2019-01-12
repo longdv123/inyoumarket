@@ -1,0 +1,38 @@
+eccube.event.controller.admin_content_news.before:
+    - [adminContentNewsBefore, NORMAL]
+#Myページ 関連
+eccube.event.render.mypage.before:
+    - [renderAddMypageMenu, NORMAL]
+eccube.event.render.mypage_change.before:
+    - [renderAddMypageMenu, NORMAL]
+eccube.event.render.mypage_change.before:
+    - [renderAddMypageMenu, NORMAL]
+eccube.event.render.mypage_change_complete.before:
+    - [renderAddMypageMenu, NORMAL]
+eccube.event.render.mypage_delivery.before:
+    - [renderAddMypageMenu, NORMAL]
+eccube.event.render.mypage_delivery_new.before:
+    - [renderAddMypageMenu, NORMAL]
+eccube.event.render.mypage_delivery_edit.before:
+    - [renderAddMypageMenu, NORMAL]
+eccube.event.render.mypage_delivery_delete.before:
+    - [renderAddMypageMenu, NORMAL]
+eccube.event.render.mypage_favorite.before:
+    - [renderAddMypageMenu, NORMAL]
+eccube.event.render.mypage_favorite_delete.before:
+    - [renderAddMypageMenu, NORMAL]
+eccube.event.render.mypage_history.before:
+    - [renderAddMypageMenu, NORMAL]
+eccube.event.render.mypage_order.before:
+    - [renderAddMypageMenu, NORMAL]
+eccube.event.render.mypage_withdraw.before:
+    - [renderAddMypageMenu, NORMAL]
+eccube.event.render.mypage_withdraw_complete.before:
+    - [renderAddMypageMenu, NORMAL]
+eccube.event.render.mypage_dpost.before:
+    - [renderAddMypageMenuActive, NORMAL]
+#商品詳細ページ
+eccube.event.controller.product_detail.before:
+    - [productDetailBefore, NORMAL]
+eccube.event.render.product_detail.before:
+    - [renderAddProductDetail, NORMAL]

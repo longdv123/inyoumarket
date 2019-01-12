@@ -1,0 +1,9 @@
+auth_magic: Y4vvled8rvnFx0RQe9uIQd7LZm3LoyMd
+password_hash_algos: sha256
+shop_name: INYOU
+force_ssl: 1
+admin_allow_host: null
+cookie_lifetime: 3600000
+locale: ja
+timezone: Asia/Tokyo
+eccube_install: 1
