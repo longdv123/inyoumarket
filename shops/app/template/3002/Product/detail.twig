@@ -77,8 +77,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         });
 
     });
-</script>
 
+	
+
+</script>
 {% endblock %}
 
 {% block main %}
@@ -324,6 +326,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         </div>
 
     </div>
+    <script>
+$(function() {
+		
+		var topBtn = $('.btn-fixed');    
+		topBtn.hide();
+		//スクロールが100に達したらボタン表示
+		$(window).scroll(function () {
+			console.log("aa");
+			if ($(this).scrollTop() > 100) {
+			//ボタンの表示方法
+				topBtn.fadeIn();
+			} else {
+			//ボタンの非表示方法
+				topBtn.fadeOut();
+			}
+		});
+		$('.btn-fixed').click(function() {
+			  $( "#form1" ).submit();
+			});
+	});
+    </script>
+    <style>
+    .errormsg.text-danger{
+    font-size:20px
+    }
+    </style>
     <!-- ▲item_list▲ -->
         
          <!-- ▲商品一覧▲ -->

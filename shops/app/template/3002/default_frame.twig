@@ -86,7 +86,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
             <p id="page-top"><a href="#header">
                <img src="{{ app.config.front_urlpath }}/img/common/pagetop.png" alt="PAGE TOP">
            </a></p>
+<div class="btn-fixed" style="display:none"><img src="/shops/html/template/3002/img/fix_btn.png" alt="今すぐ注文する"></div>
+    <style>
+.btn-fixed {
+cursor: pointer; 
+  width: 180px;
+  height: 180px;
+  position: fixed;
+bottom:80px;
+right: 20px;
+z-index: 999999;
+}
 
+@media screen and (max-width: 480px) {
+.btn-fixed {
+  width: 120px;
+  height: 120px;
+	bottom:70px;
+right: 5px;
+}
+</style>
+    
            <div id="contents" class="{{ PageLayout.theme }}">
 
             <div id="contents_top">
